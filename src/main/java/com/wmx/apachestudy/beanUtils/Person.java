@@ -13,17 +13,17 @@ public class Person {
     private Integer id;
     private String name;
     private LocalDateTime birthday;
-    private Boolean isMarry;
+    private Boolean marry;
     private Float price;
 
     public Person() {
     }
 
-    public Person(Integer id, String name, LocalDateTime birthday, boolean isMarry, Float price) {
+    public Person(Integer id, String name, LocalDateTime birthday, boolean marry, Float price) {
         this.id = id;
         this.name = name;
         this.birthday = birthday;
-        this.isMarry = isMarry;
+        this.marry = marry;
         this.price = price;
     }
 
@@ -51,12 +51,12 @@ public class Person {
         this.birthday = birthday;
     }
 
-    public boolean getMarry() {
-        return isMarry;
+    public Boolean getMarry() {
+        return marry;
     }
 
-    public void setMarry(boolean marry) {
-        isMarry = marry;
+    public void setMarry(Boolean marry) {
+        this.marry = marry;
     }
 
     public Float getPrice() {
@@ -73,7 +73,7 @@ public class Person {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", birthday=" + birthday +
-                ", isMarry=" + isMarry +
+                ", marry=" + marry +
                 ", price=" + price +
                 '}';
     }

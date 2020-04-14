@@ -1,6 +1,7 @@
 package com.wmx.apachestudy.beanUtils;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author wangmaoxiong
@@ -11,6 +12,15 @@ public class Department {
     private Integer id;
     private String name;
     private List<Person> personList;
+    private Map<String, Object> dataMap;
+
+    public Map<String, Object> getDataMap() {
+        return dataMap;
+    }
+
+    public void setDataMap(Map<String, Object> dataMap) {
+        this.dataMap = dataMap;
+    }
 
     public Department() {
     }
@@ -56,6 +66,7 @@ public class Department {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", personList=" + personList +
+                ", dataMap=" + dataMap +
                 '}';
     }
 }
