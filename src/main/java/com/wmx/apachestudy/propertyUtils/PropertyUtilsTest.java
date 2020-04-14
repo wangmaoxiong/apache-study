@@ -14,7 +14,6 @@ import java.util.*;
  */
 public class PropertyUtilsTest {
 
-
     /**
      * copyProperties(final Object dest, final Object orig)：将 orig 对象的属性赋值给 dest 对象的属性
      * 1）只有两个对象的属性名称一致时，才会进行赋值操作
@@ -185,13 +184,13 @@ public class PropertyUtilsTest {
     }
 
     /**
-     * java bean key-value 键值属性取值赋值。目的是对索引元素能一步到位的进行操作，而不需要先获取 map ，然后再操作 key-value
+     * java bean key-value 键值属性取值赋值。目的是对map元素能一步到位的进行操作，而不需要先获取 map ，然后再操作 key-value
      * setMappedProperty(final Object bean, final String name,final Object value)
      * setMappedProperty(final Object bean, final String name,final String key, final Object value)
      * getMappedProperty(final Object bean, final String name)
      * getMappedProperty(final Object bean, final String name, final String key)
      * 1) bean ：待操作的 对象
-     * 2）name ：map 类型的属性名称，格式：propertyName 或者 propertyName(key)，前者需要再指定 key 参数，后者则不需要再指定 key 惨
+     * 2）name ：map 类型的属性名称，格式：propertyName 或者 propertyName(key)，前者需要再指定 key 参数，后者则不需要再指定 key 参数.
      * 3）key：map 对象的 key 值，如果指定了，则 name 参数不需要再使用 (key) 指定.
      * 4）value：map 对象的 value 值.
      * 5）注意 setMappedProperty 赋值时，name 属性的 map 对象可以为空，但是 map 对象必须存在，否则设值不会成功，但是也不报错.
@@ -242,7 +241,7 @@ public class PropertyUtilsTest {
     /**
      * java bean 属性赋值、取值。综合了其它 setXxxProperty、getXxxProperty 方法的所有功能.
      * setProperty(final Object bean, final String name, final Object value)
-     * getProperty(final Object bean, final String name)
+     * Object getProperty(final Object bean, final String name)
      * 1、name：属性名称，如果是索引类型、map 类型、嵌套类型，想要级联操作属性时，则也是 propertyName[i]、propertyName(key) 的写法.
      */
     public void testProperty1() {
