@@ -13,9 +13,7 @@ import java.util.*;
  * @date 2020/4/13 14:31
  */
 public class PropertyUtilsTest {
-    public static void main(String[] args) {
-        new PropertyUtilsTest().testIndexedProperty();
-    }
+
 
     /**
      * copyProperties(final Object dest, final Object orig)：将 orig 对象的属性赋值给 dest 对象的属性
@@ -154,7 +152,7 @@ public class PropertyUtilsTest {
     }
 
     /**
-     * java bean 索引属性取值赋值. 比如 数组、List 等类型的属性
+     * java bean 索引属性取值赋值. 比如 数组、List 等类型的属性。目的是对索引元素能一步到位的进行操作
      * Object getIndexedProperty(final Object bean, final String name)
      * Object getIndexedProperty(final Object bean,final String name, final int index)
      * setIndexedProperty(final Object bean, final String name,final Object value)
@@ -164,7 +162,6 @@ public class PropertyUtilsTest {
      * 3）index ：索引属性的索引，如 name=personList,index=0，此时 name 属性不需要再设置索引.
      * 4）value ：为索引属性指定的索引设置值，注意 set 索引属性时，指定的索引必须存在，否则空指针异常，即只能修改，不能添加.
      */
-    @SuppressWarnings("all")
     public void testIndexedProperty() {
         try {
             Person person1 = new Person(9523, "华福", LocalDateTime.now(), false, null);
@@ -185,8 +182,103 @@ public class PropertyUtilsTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
+    /**
+     * java bean key-value 键值属性取值赋值。目的是对索引元素能一步到位的进行操作，而不需要先获取 map ，然后再操作 key-value
+     * setMappedProperty(final Object bean, final String name,final Object value)
+     * setMappedProperty(final Object bean, final String name,final String key, final Object value)
+     * getMappedProperty(final Object bean, final String name)
+     * getMappedProperty(final Object bean, final String name, final String key)
+     * 1) bean ：待操作的 对象
+     * 2）name ：map 类型的属性名称，格式：propertyName 或者 propertyName(key)，前者需要再指定 key 参数，后者则不需要再指定 key 惨
+     * 3）key：map 对象的 key 值，如果指定了，则 name 参数不需要再使用 (key) 指定.
+     * 4）value：map 对象的 value 值.
+     * 5）注意 setMappedProperty 赋值时，name 属性的 map 对象可以为空，但是 map 对象必须存在，否则设值不会成功，但是也不报错.
+     */
+    public void testMappedProperty() {
+        try {
+            Department department = new Department(1000, "开发部");
+            //setMappedProperty 赋值之前，map 对象必须存在.
+            department.setDataMap(new HashMap<>(2));
+            PropertyUtils.setMappedProperty(department, "dataMap", "address", "长沙市");
+            PropertyUtils.setMappedProperty(department, "dataMap(info)", "2019年度10强团队");
+            //输出：Department{id=1000, name='开发部', personList=null, dataMap={address=长沙市, info=2019年度10强团队}}
+            System.out.println(department);
 
+            //输出：长沙市 \n 2019年度10强团队
+            System.out.println(PropertyUtils.getMappedProperty(department, "dataMap(address)"));
+            System.out.println(PropertyUtils.getMappedProperty(department, "dataMap", "info"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 操作嵌套类型的 Java Bean 属性。即对象内的属性嵌套了其它对象.
+     * Object getNestedProperty(final Object bean, final String name)
+     * setNestedProperty(final Object bean,final String name, final Object value)
+     * 1、bean ：待操作对象
+     * 2、name ：属性名称，如果是索引类型，则使用格式：propertyName[i].嵌套对象属性名；如果是 map 类型，则使用 propertyName(key).嵌套对象属性名
+     */
+    public void testNestedProperty() {
+        try {
+            Person person1 = new Person(9524, "华强", LocalDateTime.now(), false, null);
+            List<Person> personList = new ArrayList<>();
+            personList.add(person1);
+            Department department = new Department(1002, "开发部", personList);
+            Integer personName = (Integer) PropertyUtils.getNestedProperty(department, "personList[0].id");
+            //输出：9524
+            System.out.println(personName);
+            //赋值时注意 personList[i] 对象必须存在，否则报错.
+            PropertyUtils.setNestedProperty(department, "personList[0].price", 8878.99F);
+            System.out.println(personList);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * java bean 属性赋值、取值。综合了其它 setXxxProperty、getXxxProperty 方法的所有功能.
+     * setProperty(final Object bean, final String name, final Object value)
+     * getProperty(final Object bean, final String name)
+     * 1、name：属性名称，如果是索引类型、map 类型、嵌套类型，想要级联操作属性时，则也是 propertyName[i]、propertyName(key) 的写法.
+     */
+    public void testProperty1() {
+        try {
+            Person person1 = new Person(9524, "华强", LocalDateTime.now(), false, null);
+            PropertyUtils.setProperty(person1, "id", 1000);
+            PropertyUtils.setProperty(person1, "marry", true);
+            //输出：Person{id=1000, name='华强', birthday=2020-04-14T19:38:11.496, marry=true, price=null}
+            System.out.println(person1);
+            Object id = PropertyUtils.getProperty(person1, "id");
+            Object marry = PropertyUtils.getProperty(person1, "marry");
+            //输出：1000,true
+            System.out.println(id + "," + marry);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void testProperty2() {
+        try {
+            Person person1 = new Person(2000, "华胜", LocalDateTime.now(), true, 9988.98F);
+            List<Person> personList = new ArrayList<>();
+            personList.add(person1);
+            Department department = new Department(1002, "开发部", personList);
+            PropertyUtils.setProperty(department, "personList[0].name", "华风");
+            String name = (String) PropertyUtils.getProperty(department, "personList[0].name");
+            //输出：华风
+            System.out.println(name);
+            //输出：[Person{id=2000, name='华风', birthday=2020-04-14T19:43:22.984, marry=true, price=9988.98}]
+            System.out.println(department.getPersonList());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        new PropertyUtilsTest().testProperty2();
+    }
 }
