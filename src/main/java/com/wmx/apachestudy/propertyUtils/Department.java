@@ -1,4 +1,4 @@
-package com.wmx.apachestudy.beanUtils;
+package com.wmx.apachestudy.propertyUtils;
 
 import java.util.List;
 import java.util.Map;

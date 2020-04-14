@@ -1,5 +1,7 @@
 package com.wmx.apachestudy.beanUtils;
 
+import com.wmx.apachestudy.propertyUtils.Department;
+import com.wmx.apachestudy.propertyUtils.Person;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.PropertyUtilsBean;
