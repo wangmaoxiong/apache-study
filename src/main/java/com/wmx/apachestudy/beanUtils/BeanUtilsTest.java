@@ -2,15 +2,13 @@ package com.wmx.apachestudy.beanUtils;
 
 import com.wmx.apachestudy.propertyUtils.Department;
 import com.wmx.apachestudy.propertyUtils.Person;
+import com.wmx.apachestudy.propertyUtils.PropertyUtilsTest;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author wangmaoxiong
@@ -78,8 +76,9 @@ public class BeanUtilsTest {
     /**
      * setProperty(final Object bean, final String name, final Object value)：设置对象的属性值.
      * String getProperty(final Object bean, final String name)：获取对象的属性值.
+     * 1、综合了其它所有 getXxxProperty 的功能.
      */
-    public void testSetProperty() {
+    public void testProperty() {
         try {
             Department department = new Department(2001, "大数据研发中心");
             Map<String, Object> dataMap = new HashMap<>(8);
@@ -141,8 +140,81 @@ public class BeanUtilsTest {
         }
     }
 
-    public static void main(String[] args) {
-        new BeanUtilsTest().testSetProperty();
+    /**
+     * String[] getArrayProperty(final Object bean, final String name)
+     * 返回指定的字符串数组。对于数组、list 等索引类型，可以使用此方法进行取值，直接返回字符串数组.
+     */
+    public void testArrayProperty() {
+        try {
+            String[] phoneArr = {"110", "120", "119"};
+            User user = new User();
+            BeanUtils.setProperty(user, "id", 1000);
+            BeanUtils.setProperty(user, "name", "华春");
+            BeanUtils.setProperty(user, "phones", phoneArr);
+
+
+            //输出：User{id=1000, name='华春', phones=[110, 120, 119], address=null}
+            System.out.println(user);
+            String[] phones = BeanUtils.getArrayProperty(user, "phones");
+            //输出：[110, 120, 119]
+            System.out.println(Arrays.asList(phones));
+
+            List<String> stringList = new ArrayList<>();
+            stringList.add("ss");
+            stringList.add("ll");
+            stringList.add("pp");
+            user.setAddress(stringList);
+
+            //输出：[ss, ll, pp]
+            String[] arrayProperty = BeanUtils.getArrayProperty(user, "address");
+            System.out.println(Arrays.asList(arrayProperty));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
+    /**
+     * String getIndexedProperty(final Object bean, final String name)
+     * String getIndexedProperty(final Object bean,final String name, final int index)
+     * 1、获取索引类型属性的值，如数组类型、List 类型 等.
+     * 2、name 是数学值，可以使用 "propertyName[i]" 格式直接指定索引
+     * 3、index ：索引.
+     * 4、注意索引属性对象必须存在，否则空指针异常；索引不能越界，否则索引越界异常.
+     */
+    public void testIndexedProperty() {
+        try {
+            String[] phoneArr = {"111", "122", "119"};
+            User user1 = new User();
+            BeanUtils.setProperty(user1, "id", 1001);
+            BeanUtils.setProperty(user1, "name", "华东");
+            BeanUtils.setProperty(user1, "phones", phoneArr);
+
+            String phone = BeanUtils.getIndexedProperty(user1, "phones[1]");
+            String address = BeanUtils.getIndexedProperty(user1, "phones", 2);
+            //输出：122,119
+            System.out.println(phone + "," + address);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * {@link PropertyUtilsTest#testMappedProperty()}
+     * {@link PropertyUtilsTest#testNestedProperty()}
+     * {@link PropertyUtilsTest#testSimpleProperty()}
+     */
+
+    public void testOrher() {
+        //String getMappedProperty(final Object bean, final String name)
+        //String getMappedProperty(final Object bean,final String name, final String key)
+        //String getNestedProperty(final Object bean, final String name)
+        //String getSimpleProperty(final Object bean, final String name)
+        //
+    }
+
+    public static void main(String[] args) {
+        new BeanUtilsTest().testIndexedProperty();
+    }
 }
