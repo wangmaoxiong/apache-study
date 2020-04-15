@@ -277,7 +277,25 @@ public class PropertyUtilsTest {
         }
     }
 
+    /**
+     * Class<?> getPropertyType(final Object bean, final String name)
+     * 1、获取 bean 的属性的类型.
+     */
+    public void testPropertyType() {
+        try {
+            Department department = new Department();
+            Class<?> id = PropertyUtils.getPropertyType(department, "id");
+            Class<?> list = PropertyUtils.getPropertyType(department, "personList");
+            //输出：class java.lang.Integer
+            System.out.println(id);
+            //输出：interface java.util.List
+            System.out.println(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
-        new PropertyUtilsTest().testProperty2();
+        new PropertyUtilsTest().testPropertyType();
     }
 }
