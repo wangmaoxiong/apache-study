@@ -14,6 +14,21 @@ public class ObjectUtilsStudy {
     /**
      * allNotNull(final Object... values) 检查给定数组中的任何元素值是否都不是 null。
      * anyNotNull(final Object... values) 检查给定数组中的元素是否有不是 null 的值。
+     * <p>
+     * ObjectUtils.allNotNull(*)             = true
+     * ObjectUtils.allNotNull(*, *)          = true
+     * ObjectUtils.allNotNull(null)          = false
+     * ObjectUtils.allNotNull(null, null)    = false
+     * ObjectUtils.allNotNull(null, *)       = false
+     * ObjectUtils.allNotNull(*, null)       = false
+     * ObjectUtils.allNotNull(*, *, null, *) = false
+     * <p>
+     * ObjectUtils.anyNotNull(*)                = true
+     * ObjectUtils.anyNotNull(*, null)          = true
+     * ObjectUtils.anyNotNull(null, *)          = true
+     * ObjectUtils.anyNotNull(null, null, *, *) = true
+     * ObjectUtils.anyNotNull(null)             = false
+     * ObjectUtils.anyNotNull(null, null)       = false
      */
     public void test1() {
         String a = "";
@@ -108,6 +123,7 @@ public class ObjectUtilsStudy {
 
     /**
      * max(final T... values)：获取其中最大的值
+     * min(final T... values): 获取其中最小的值
      * median(final T... items)：获取其中的中位数
      */
     public void test5() {
@@ -115,8 +131,7 @@ public class ObjectUtilsStudy {
         Integer max = ObjectUtils.max(ints);
         Integer min = ObjectUtils.min(ints);
         Integer median = ObjectUtils.median(ints);
-        Integer mode = ObjectUtils.mode(ints);
-        System.out.println(max + "," + min + "," + median + "," + mode);
+        System.out.println(max + "," + min + "," + median);
     }
 
     public static void main(String[] args) {
