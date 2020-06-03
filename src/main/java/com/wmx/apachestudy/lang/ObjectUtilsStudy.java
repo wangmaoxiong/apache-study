@@ -63,7 +63,6 @@ public class ObjectUtilsStudy {
      * 1、如果 c1 < c2,则返回负数；如果 c1 > c2,则返回正数；如果 c1 = c2,则返回 0；
      * 2、c1、c2 可以为 null。nullGreater 为  false 时，先判断 c1 如果 null ，则返回 -1，再判断 c2 如果为 null，则返回 1.
      * 3、compare(final T c1, final T c2) 底层是 compare(c1, c2, false)
-     * 4、
      */
     public void test3() {
         System.out.println(ObjectUtils.compare(2, 3));
