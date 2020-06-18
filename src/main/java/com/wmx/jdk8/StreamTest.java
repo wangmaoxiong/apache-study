@@ -3,7 +3,12 @@ package com.wmx.jdk8;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.function.ToDoubleFunction;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -23,6 +28,8 @@ public class StreamTest {
 
     /**
      * forEach(Consumer<? super T> action) 对该流中的每个元素执行最终操作
+     * 1、实现 {@link Consumer} 接口中 void accept(T t) 方法，t 表示流中当前遍历到的元素
+     * 2、Stream<E> stream()：将集合转为流
      */
     @Test
     public void forEach() {
@@ -39,6 +46,7 @@ public class StreamTest {
 
     /**
      * Stream<T> filter(Predicate<? super T> predicate) 元素过滤，返回符合条件的元素，这是一个中间操作，返回结果流
+     * 1、需要实现 {@link Predicate} 接口中的 boolean test(T t) 方法,t 为流中的元素，返回 false 的元素将会丢弃.
      */
     @Test
     public void filter() {
@@ -222,80 +230,78 @@ public class StreamTest {
     @Test
     public void allMatch() {
         List<Integer> list = Arrays.asList(22, 34, 55, 43, 28);
-        boolean allMatch1 = list.stream().allMatch(item -> item > 18);
-        boolean allMatch2 = list.parallelStream().allMatch(item -> item > 28);
+        boolean allMatch1 = list.stream().allMatch(item -> item >= 18);
+        boolean allMatch2 = list.parallelStream().allMatch(item -> item >= 28);
         //true,false
         System.out.println(allMatch1 + "," + allMatch2);
     }
 
-
-    @Test
-    public void reduce() {
-        Stream<String> stream = Stream.of("you", "give", "me", "stop");
-        // Optional<T> reduce(BinaryOperator<T> accumulator);
-        Optional<String> optional = stream.reduce((before, after) -> before + "," + after);
-        // you,give,me,stop
-        optional.ifPresent(System.out::println);
-    }
-
-    @Test
-    public void reduce2() {
-        List<BigDecimal> list = Arrays.asList(
-                new BigDecimal("11.11"),
-                new BigDecimal("22.22"),
-                new BigDecimal("33.33")
-        );
-        // 66.66
-        BigDecimal sum = list.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
-        System.out.println(sum);
-    }
-
-    @Test
-    public void findFirst() {
-        Stream<String> stream = Stream.of("you", "give", "me", "stop");
-        String value = stream.findFirst().get();
-        System.out.println(value);
-    }
-
-    @Test
-    public void findAny() {
-        Stream<String> stream = Stream.of("you", "give", "me", "stop");
-        String value2 = stream.findAny().get();
-        System.out.println(value2);
-    }
-
     /**
-     * Stream API 提供数字流 numbers Stream，包括 IntStream、DoubleStream、
-     * 和LongStream我们通过创建一个数字流来来搞清楚它们是如何工作的。然后，我们用 [IntStream#sum] 计算它的总数
+     * Stream API 提供数字流 包括 IntStream、DoubleStream、LongStream
+     * 1、int sum() : 对流中的元素进行求和，底层也是使用 reduce(0, Integer::sum) 方法
      */
     @Test
-    public void test1() {
-        IntStream intNumbers = IntStream.range(1, 5);
+    public void sum() {
+        IntStream intNumbers = IntStream.of(1, 4, 2, 3, 5, 5);
+        //20
         int sum = intNumbers.sum();
         System.out.println(sum);
     }
 
     /**
-     * 使用 mapToDouble 将对象流转换为Double stream
+     * DoubleStream mapToDouble(ToDoubleFunction<? super T> mapper)：将对象流转换为 DoubleStream
+     * 1、{@link ToDoubleFunction} 接口中有一个 double applyAsDouble(T value)，函数式接口接收一个参数，并将处理结果以  double 类型返回
      */
     @Test
-    public void test2() {
-        List<Double> doubleNumbers = Arrays.asList(23.48, 52.26, 13.5);
-        double result = doubleNumbers.stream()
-                .mapToDouble(Double::doubleValue)
-                .sum();
+    public void mapToDouble() {
+        //对 double 类型列表中的所有元素进行求和
+        List<Double> doubleList = Arrays.asList(223.582, 52.426, 113.532);
+        double result = doubleList.stream().mapToDouble(aDouble -> aDouble.doubleValue()).sum();
+        //389.53999999999996
         System.out.println(result);
+
+        //格式化数字，保留小数点后四位
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        DecimalFormat decimalFormat = (DecimalFormat) numberFormat;
+        decimalFormat.applyPattern("#,###.0000");
+        String format = decimalFormat.format(result);
+        //389.5400
+        System.out.println(format);
+    }
+
+    //https://blog.csdn.net/weixin_43860260/article/details/94875064
+
+    /**
+     * Optional<T> reduce(BinaryOperator<T> accumulator)
+     * 1、函数式接口 BinaryOperator，继承于 BiFunction，BiFunction 中有一个 R apply(T t, U u) 方法
+     * 2、apply 方法中的参数 t 表示当前计算的值，u 表示下一个元素。
+     * 3、返回的值 r 会作为参数 t，非常适合累加、累乘等等操作
+     * 4、boolean isPresent()：如果存在值，则返回 true，否则返回 false.
+     * 5、如果 {@code Optional} 中有值，则返回该值，否则抛出异常。
+     */
+    @Test
+    public void test11() {
+        List<Integer> integerList = Arrays.asList(1, 2, 3, 5, 6, 7, 8, 9, 10);
+        Optional<Integer> reduce = integerList.stream().reduce((total, item) -> {
+            total += item;
+            return total;
+        });
+        boolean present = reduce.isPresent();
+        if (present) {
+            System.out.println(reduce.get());
+        }
     }
 
     @Test
     public void test3() {
         Stream<Integer> intNumbers = Stream.of(5, 1, 100);
-        int result = intNumbers.reduce(0, Integer::sum);
+        int result = intNumbers.reduce(10, (a, b) -> Integer.sum(a, b));
         System.out.println(result);
     }
 
     /**
-     * reduce方法有两个参数：
+     * T reduce(T identity, BinaryOperator<T> accumulator)
+     * reduce 方法有两个参数：
      * <p>
      * Identity – 等于0–它是还原的起始值
      * Accumulator function – 接受两个参数，目前为止的结果，以及流的下一个元素
@@ -304,7 +310,7 @@ public class StreamTest {
     public void test4() {
         Stream<BigDecimal> bigDecimalNumber =
                 Stream.of(BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.TEN);
-        BigDecimal result = bigDecimalNumber.reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal result = bigDecimalNumber.reduce(BigDecimal.ZERO, (bigDecimal, augend) -> bigDecimal.add(augend));
         System.out.println(result);
     }
 }
