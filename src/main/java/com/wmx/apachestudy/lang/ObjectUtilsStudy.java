@@ -1,6 +1,7 @@
 package com.wmx.apachestudy.lang;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -106,6 +107,7 @@ public class ObjectUtilsStudy {
      * <p>
      * ObjectUtils.isEmpty(null)             = true
      * ObjectUtils.isEmpty("")               = true
+     * ObjectUtils.isEmpty(" ")              = false
      * ObjectUtils.isEmpty("ab")             = false
      * ObjectUtils.isEmpty(new int[]{})      = true
      * ObjectUtils.isEmpty(new int[]{1,2,3}) = false
@@ -119,6 +121,13 @@ public class ObjectUtilsStudy {
      * ObjectUtils.isNotEmpty(1234)             = true
      */
 
+    @Test
+    public void isEmpty() {
+        System.out.println(ObjectUtils.isEmpty(null));//true
+        System.out.println(ObjectUtils.isEmpty(""));//true
+        System.out.println(ObjectUtils.isEmpty(" "));//false
+        System.out.println(ObjectUtils.isEmpty(new int[]{}));//true
+    }
 
     /**
      * max(final T... values)：获取其中最大的值
