@@ -1,4 +1,4 @@
-package com.wmx.other;
+package com.wmx.spring;
 
 import org.junit.Test;
 import org.springframework.util.Assert;
@@ -6,6 +6,8 @@ import org.springframework.util.Assert;
 import java.util.*;
 
 /**
+ * Spring-core 核心包工具类 之 断言
+ *
  * @author wangMaoXiong
  * @version 1.0
  * @date 2020/6/18 15:29
@@ -165,6 +167,4 @@ public class AssertTest {
         Assert.notEmpty(list, "list 不能为空集合");
         Assert.notEmpty(map, "map 不能为空 Map");
     }
-
-
 }
