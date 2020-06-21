@@ -166,7 +166,7 @@ public class StreamTest {
      * long count() :统计流中元素个数
      */
     @Test
-    public void stu7() {
+    public void count() {
         Stream<String> stream = Stream.of("c", "e", "a", "d", "b");
         long count = stream.count();
         System.out.println(count);
@@ -269,18 +269,16 @@ public class StreamTest {
         System.out.println(format);
     }
 
-    //https://blog.csdn.net/weixin_43860260/article/details/94875064
-
     /**
      * Optional<T> reduce(BinaryOperator<T> accumulator)
-     * 1、函数式接口 BinaryOperator，继承于 BiFunction，BiFunction 中有一个 R apply(T t, U u) 方法
+     * 1、函数式接口 BinaryOperator，继承于 BiFunction，其中有一个 R apply(T t, U u) 方法
      * 2、apply 方法中的参数 t 表示当前计算的值，u 表示下一个元素。
-     * 3、返回的值 r 会作为参数 t，非常适合累加、累乘等等操作
+     * 3、返回的值 r 会作为参数 t 继续传入，非常适合累加、累乘等等操作
      * 4、boolean isPresent()：如果存在值，则返回 true，否则返回 false.
      * 5、如果 {@code Optional} 中有值，则返回该值，否则抛出异常。
      */
     @Test
-    public void test11() {
+    public void reduce1() {
         List<Integer> integerList = Arrays.asList(1, 2, 3, 5, 6, 7, 8, 9, 10);
         Optional<Integer> reduce = integerList.stream().reduce((total, item) -> {
             total += item;
@@ -288,29 +286,29 @@ public class StreamTest {
         });
         boolean present = reduce.isPresent();
         if (present) {
-            System.out.println(reduce.get());
+            //1-10累加结果=51
+            System.out.println("1-10累加结果=" + reduce.get());
         }
-    }
-
-    @Test
-    public void test3() {
-        Stream<Integer> intNumbers = Stream.of(5, 1, 100);
-        int result = intNumbers.reduce(10, (a, b) -> Integer.sum(a, b));
-        System.out.println(result);
     }
 
     /**
      * T reduce(T identity, BinaryOperator<T> accumulator)
-     * reduce 方法有两个参数：
-     * <p>
-     * Identity – 等于0–它是还原的起始值
-     * Accumulator function – 接受两个参数，目前为止的结果，以及流的下一个元素
+     * identity – 在 reduce(BinaryOperator<T> accumulator) 的基础上提供一个初始值
+     * accumulator – 与 reduce(BinaryOperator<T> accumulator) 一致
      */
     @Test
-    public void test4() {
-        Stream<BigDecimal> bigDecimalNumber =
-                Stream.of(BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.TEN);
-        BigDecimal result = bigDecimalNumber.reduce(BigDecimal.ZERO, (bigDecimal, augend) -> bigDecimal.add(augend));
+    public void reduce2() {
+        Stream<Integer> intNumbers = Stream.of(5, 1, 100);
+        int result = intNumbers.reduce(10, (a, b) -> Integer.sum(a, b));
+        //116
         System.out.println(result);
+    }
+
+    @Test
+    public void reduce3() {
+        Stream<BigDecimal> bigDecimalNumber = Stream.of(BigDecimal.valueOf(100), BigDecimal.valueOf(210));
+        BigDecimal result = bigDecimalNumber.reduce(BigDecimal.ZERO, (total, item) -> total.add(item));
+        //BigDecimal 类型流式求和：310
+        System.out.println("BigDecimal 类型流式求和：" + result);
     }
 }
