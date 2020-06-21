@@ -125,4 +125,17 @@ public class ListUtilsStu {
         System.out.println(names1 + "," + names2 + "," + union);//[张三, 李四],[王五, 张三],[张三, 李四, 王五, 张三]
     }
 
+    /**
+     * 1、{@link Arrays#asList(java.lang.Object[])} 返回的是 Arrays 的内部类 {@link Arrays.ArrayList}，而并不是 java.util.ArrayList
+     * 2、内部类继承关系：private static class ArrayList<E> extends AbstractList<E> extends AbstractCollection<E> implements List<E>
+     * 3、Arrays 的内部类 {@link Arrays.ArrayList} 只重写了部分方法，而  add、remove 方法是没有重写的，在 AbstractList 中直接抛的异常 throw new UnsupportedOperationException();
+     */
+    @Test
+    public void asList() {
+        //一定要注意 Arrays.asList 返回的 ArrayList 并不是 java.util.ArrayList，而只是 Arrays 的一个内部类，它没有重写 add、remove 方法
+        //调用就会抛出异常 UnsupportedOperationException - 不支持的操作
+        List<Integer> integerList = Arrays.asList(12, 22, 32, 23);
+        integerList.add(999);
+    }
+
 }
