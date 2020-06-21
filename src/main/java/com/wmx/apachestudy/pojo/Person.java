@@ -1,5 +1,6 @@
 package com.wmx.apachestudy.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -7,7 +8,7 @@ import java.util.Date;
  * @version 1.0
  * @date 2020/6/20 10:54
  */
-public class Person {
+public class Person implements Serializable {
     private Integer id;
     private String name;
     private Date birthday;
@@ -53,5 +54,15 @@ public class Person {
 
     public void setSalry(Float salry) {
         this.salry = salry;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", birthday=" + birthday +
+                ", salry=" + salry +
+                '}';
     }
 }
