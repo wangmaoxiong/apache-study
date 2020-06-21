@@ -5,7 +5,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.*;
 
-/**
+/**Spring-core 核心工具类 之 字符串工具类
  * @author wangMaoXiong
  * @version 1.0
  * @date 2020/6/21 8:24
