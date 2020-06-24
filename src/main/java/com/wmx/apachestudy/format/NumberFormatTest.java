@@ -1,5 +1,7 @@
 package com.wmx.apachestudy.format;
 
+import org.junit.Test;
+
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -10,13 +12,14 @@ import java.util.Locale;
  * @version 1.0
  * @date 2020/6/2 19:50
  */
-public class NumberFormatStudy {
+public class NumberFormatTest {
     /**
      * getInstance(Locale inLocale)：返回指定区域设置的通用数字格式
      * getInstance() : 返回当前默认值的通用数字格式
      * java.util.Locale#getDefault()：获取此 Java 虚拟机实例的默认区域设置的当前值。
      * java.text.NumberFormat#setGroupingUsed(boolean newValue): 设置整数部分是否使用 "," 3个为一组进行分组，默认为 true。
      */
+    @Test
     public void test1() {
         double salaryYear = 350640.82988;
         NumberFormat numberFormat = NumberFormat.getInstance(Locale.getDefault());
@@ -34,6 +37,7 @@ public class NumberFormatStudy {
     /**
      * java.text.NumberFormat#getInstance() 返回当前默认值的通用数字格式
      */
+    @Test
     public void test2() {
         try {
             double salaryYear = 350640.82988;
@@ -107,6 +111,7 @@ public class NumberFormatStudy {
         }
     }
 
+    @Test
     public void test3() {
         try {
             double salaryYear = 350640.82988;
@@ -128,6 +133,7 @@ public class NumberFormatStudy {
         }
     }
 
+    @Test
     public void test4() {
         try {
             double salaryYear = 350640.82988;
@@ -160,6 +166,7 @@ public class NumberFormatStudy {
         }
     }
 
+    @Test
     private void test5() {
         double salaryYear = 350640.82988;
         double salaryDay = 350.54;
@@ -186,12 +193,4 @@ public class NumberFormatStudy {
         System.out.println("格式5(常用格式)：" + df.format(salaryYear) + "\t,\t" + df.format(salaryDay));
     }
 
-    public static void main(String[] args) {
-        NumberFormatStudy numberFormatStudy = new NumberFormatStudy();
-//        numberFormatStudy.test1();
-//        numberFormatStudy.test2();
-//        numberFormatStudy.test3();
-//        numberFormatStudy.test4();
-        numberFormatStudy.test5();
-    }
 }
