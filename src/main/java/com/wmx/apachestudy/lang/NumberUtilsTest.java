@@ -30,13 +30,13 @@ public class NumberUtilsTest {
     }
 
     /**
-     * int compare(final byte x, final byte y)：比较 x、y 的大小，源码直接是 return x - y;
+     * int compare(final byte x, final byte y)：比较 x、y 的大小，源码 return x - y;
      * int compare(final int x, final int y): 比较 x、y 的大小，源码：x == y ? 0 : x < y ? -1 : 1
      * int compare(final long x, final long y): 比较 x、y 的大小，源码：x == y ? 0 : x < y ? -1 : 1
      * int compare(final short x, final short y) : 比较 x、y 的大小，源码：x == y ? 0 : x < y ? -1 : 1
      */
     @Test
-    public void test2() {
+    public void compare() {
         //-2、-1、-1、-1
         System.out.printf("%d、", NumberUtils.compare(Byte.parseByte("16"), Byte.parseByte("18")));
         System.out.printf("%d、", NumberUtils.compare(Integer.parseInt("16"), Integer.parseInt("18")));
