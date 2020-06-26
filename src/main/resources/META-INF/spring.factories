@@ -1,0 +1,3 @@
+#格式就是普通的键值对的形式，右斜杠表示换行
+org.springframework.boot.SpringApplicationRunListener=\
+com.wmx.apachestudy.listener.MySpringApplicationRunListener
