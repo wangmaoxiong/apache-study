@@ -77,6 +77,7 @@
         </dependency>
 
         <!--Junit 5 测试-->
+        <!--经过实测，IDEA 会与某些 junit-jupiter-api 版本不兼容，运行的时候，会有警告，此时换个 junit jupiter 版本就可以了-->
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
