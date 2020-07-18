@@ -7,6 +7,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import org.junit.Test;
 
+import javax.swing.filechooser.FileSystemView;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -49,8 +51,7 @@ public class GsonTest {
     /**
      * 数组格式的 Json 字符串 转 List 列表
      * T fromJson(String json, Type typeOfT)
-     * 1、如果解析结果是普通对象，如 单纯的 POJO，数组 等，则可以使用 fromJson(String json, Class<T> classOfT)
-     * 2、如果解析结果是复杂类型，如 List<T> 这种，则应该使用 fromJson(String json, Type typeOfT)
+     * 1、将指定的 Json 反序列化为指定类的对象，如果指定的类是泛型类型，则使用 fromJson(String, Type)方法。
      * 3、json：被转换的 json 格式的字符串
      * 4、typeOfT：解析结果类型
      */
@@ -94,6 +95,37 @@ public class GsonTest {
         Gson gson = new Gson();
         Person person = gson.fromJson(jsonObject, Person.class);
         System.out.println(Arrays.asList(person));//[Person{id=3000, name='王五', birthday=null, marry=true}]
+    }
+
+    /**
+     * T fromJson(Reader json, Class<T> classOfT)
+     */
+    @Test
+    public void fromJson6() {
+        try {
+            String json = "{\"id\":9527,\"name\":\"华安\",\"birthday\":\"Jul 14, 2020 8:32:19 AM\",\"marry\":true}";
+
+            //1、在本地准备准备先生成一个 json 文件
+            File homeDirectory = FileSystemView.getFileSystemView().getHomeDirectory();
+            File jsonFile = new File(homeDirectory, "wmx3.json");
+            if (!jsonFile.exists()) {
+                FileWriter fileWriter = new FileWriter(jsonFile);
+                fileWriter.write(json);
+                fileWriter.flush();
+                fileWriter.close();
+                System.out.println("输出 json 文件：" + jsonFile.getAbsolutePath());
+            }
+            Reader reader = new FileReader(jsonFile);
+            //2、读取本地 json 文件的内容进行反序列化
+            //Person{id=9527, name='华安', birthday=Tue Jul 14 08:32:19 CST 2020, marry=true}
+            Person person = new Gson().fromJson(reader, Person.class);
+            System.out.println(person);
+            reader.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -184,7 +216,6 @@ public class GsonTest {
         //{"birthday":"Jul 14, 2020 9:10:00 AM","name":"马六","marry":false,"id":4000}
         System.out.println(json);
     }
-
 
     /**
      * JsonElement toJsonTree(Object src)
