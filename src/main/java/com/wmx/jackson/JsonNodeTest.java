@@ -252,5 +252,111 @@ public class JsonNodeTest {
         System.out.println(arrayNode.has(2));//true
         System.out.println(arrayNode.has(4));//false
     }
+
     //TODO JsonNode API 已经总结完成，剩下  ObjectNode 与 ArrayNode
+
+    /**
+     * Iterator<JsonNode> elements()：如果该节点是JSON数组或对象节点，则访问此节点的所有值节点
+     * 对于对象节点，不包括字段名（键），只包括值，对于其他类型的节点，返回空迭代器。
+     */
+    @Test
+    public void test12() {
+        try {
+            String json = "{\"title\":\"放假通知\",\"content\":\"寒假放假于本月3浩开始.\",\"id\":23400}";
+            JsonNode jsonNode = new ObjectMapper().readTree(json);
+            Iterator<JsonNode> elements = jsonNode.elements();
+            while (elements.hasNext()) {
+                JsonNode next = elements.next();
+                //"放假通知" "寒假放假于本月3浩开始." 23400
+                System.out.print(next + " ");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * ArrayNode addAll(ArrayNode other): 用于添加给定数组的所有子节点
+     */
+    @Test
+    public void test13() {
+        try {
+            String json = "[{\"title\":\"放假通知\",\"content\":\"寒假放假于本月3浩开始.\"}]";
+            JsonNode jsonNode = new ObjectMapper().readTree(json);
+
+            ArrayNode rootArrayNode = JsonNodeFactory.instance.arrayNode();
+            rootArrayNode.add(1000);
+            if (jsonNode.isArray()) {
+                ArrayNode arrayNode = (ArrayNode) jsonNode;
+                rootArrayNode.addAll(arrayNode);
+            }
+            //[1000,{"title":"放假通知","content":"寒假放假于本月3浩开始."}]
+            System.out.println(rootArrayNode);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * ArrayNode addNull() :该方法将在此数组节点的末尾添加空值。
+     */
+    @Test
+    public void test14() {
+        try {
+            String json = "[{\"title\":\"放假通知\",\"content\":\"寒假放假于本月3浩开始.\"}]";
+            JsonNode jsonNode = new ObjectMapper().readTree(json);
+            if (jsonNode.isArray()) {
+                ArrayNode arrayNode = (ArrayNode) jsonNode;
+                arrayNode.addNull();
+                //[{"title":"放假通知","content":"寒假放假于本月3浩开始."},null]
+                System.out.println(arrayNode);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * ArrayNode addArray(): 构造新的 ArrayNode 节点，并将其添加到此数组节点的末尾
+     */
+    @Test
+    public void test15() {
+        try {
+            String json = "[{\"title\":\"放假通知\",\"content\":\"寒假放假于本月3浩开始.\"}]";
+            JsonNode jsonNode = new ObjectMapper().readTree(json);
+            if (jsonNode.isArray()) {
+                ArrayNode arrayNode = (ArrayNode) jsonNode;
+                ArrayNode addArray = arrayNode.addArray();
+                addArray.add(31.4F);
+                addArray.add("优秀");
+                //[{"title":"放假通知","content":"寒假放假于本月3浩开始."},[31.4,"优秀"]]
+                System.out.println(arrayNode);
+                //[31.4,"优秀"]
+                System.out.println(addArray);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * ObjectNode putObject(String fieldName)：构造新的 ObjectNode 字节的，并将其作为此 ObjectNode 的字段添加。
+     */
+    @Test
+    public void test16() {
+        try {
+            String json = "{\"title\":\"放假通知\",\"content\":\"寒假放假于本月3浩开始.\"}";
+            JsonNode jsonNode = new ObjectMapper().readTree(json);
+            if (jsonNode.isObject()) {
+                ObjectNode objectNode = (ObjectNode) jsonNode;
+                ObjectNode persons = objectNode.putObject("person");
+                persons.put("name", "张三");
+                persons.put("age", 34);
+                //{"title":"放假通知","content":"寒假放假于本月3浩开始.","person":{"name":"张三","age":34}}
+                System.out.println(objectNode);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
