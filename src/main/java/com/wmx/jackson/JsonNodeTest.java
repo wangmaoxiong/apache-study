@@ -253,8 +253,6 @@ public class JsonNodeTest {
         System.out.println(arrayNode.has(4));//false
     }
 
-    //TODO JsonNode API 已经总结完成，剩下  ObjectNode 与 ArrayNode
-
     /**
      * Iterator<JsonNode> elements()：如果该节点是JSON数组或对象节点，则访问此节点的所有值节点
      * 对于对象节点，不包括字段名（键），只包括值，对于其他类型的节点，返回空迭代器。
