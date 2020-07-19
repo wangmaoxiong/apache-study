@@ -1,9 +1,6 @@
 package com.wmx.gson;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -90,6 +87,8 @@ public class JsonArrayTest {
         System.out.println(deepCopy);//[{"code":200,"msg":"成功"},"Yes"]
     }
 
+
+
     /**
      * JsonElement get(int i): 返回数组的第i个元素
      * 1、如果 i 为负或大于等于数组的大小，则抛 IndexOutOfBoundsException 异常
@@ -98,9 +97,12 @@ public class JsonArrayTest {
     public void test5() {
         JsonArray jsonArray = new JsonParser().parse("[{\"code\":200,\"msg\":\"成功\"}]").getAsJsonArray();
         for (int i = 0; i < jsonArray.size(); i++) {
-            JsonObject jsonObject = jsonArray.get(i).getAsJsonObject();
-            //200,成功
-            System.out.println(jsonObject.get("code").getAsString() + "," + jsonObject.get("msg").getAsString());
+            JsonElement jsonElement = jsonArray.get(i);
+            if (jsonElement.isJsonObject()) {
+                JsonObject jsonObject = jsonElement.getAsJsonObject();
+                //200,成功
+                System.out.println(jsonObject.get("code").getAsString() + "," + jsonObject.get("msg").getAsString());
+            }
         }
     }
 
@@ -151,7 +153,7 @@ public class JsonArrayTest {
 
     /**
      * JsonElement set(int index, JsonElement element)
-     * 1、将此数组中指定位置的元素替换为指定元，element 不能为null，返回先前在指定位置的元素
+     * 1、将此数组中指定位置的元素替换为指定元素，element 不能为null，返回先前在指定位置的元素
      */
     @Test
     public void test9() {
@@ -180,6 +182,45 @@ public class JsonArrayTest {
                 System.out.println(jsonElement.getAsString());
             } else {
                 System.out.println("第 " + i + " 个元素只为 null。");
+            }
+        }
+    }
+
+    /**
+     * JsonArray getAsJsonArray():将此元素作为 JsonArray 获取,如果元素是其他类型的元素，则会生成 IlleglastateException 异常,
+     * 因此最好先调用 isJsonArray() 方法确保该元素是所需的类型，然后再使用此方法。
+     */
+    @Test
+    public void test11() {
+        String json = "{\"persons\":[{\"id\":9527,\"name\":\"华安\",\"marry\":true},{\"id\":1200,\"name\":\"安禄山\",\"marry\":false}]}";
+        JsonObject jsonObject = new JsonParser().parse(json).getAsJsonObject();
+        JsonElement persons = jsonObject.get("persons");
+        if (persons.isJsonArray()) {
+            JsonArray jsonArray = persons.getAsJsonArray();
+            //{"id":1200,"name":"安禄山","marry":false}
+            System.out.println(jsonArray.get(1));
+        }
+    }
+
+    /**
+     * JsonPrimitive getAsJsonPrimitive():
+     * 将此元素作为 JsonPrimitive 获取，如果元素是其他类型的元素，则会引发 IlleglastateException 异常，
+     * 因此最好先通过调用 isJsonPrimitive() 方法来确保该元素是所需的类型之后再使用此方法。JsonPrimitive 值可以是 Java 字符串、Java 基本数据类型及其包装器类型。
+     */
+    @Test
+    public void test12() {
+        String json = "[\"本级小计\",368.00,328.00,]";
+        JsonElement sourceJsonElement = new JsonParser().parse(json);
+        JsonArray jsonArray = sourceJsonElement.getAsJsonArray();
+        for (int i = 0; i < jsonArray.size(); i++) {
+            JsonElement jsonElement = jsonArray.get(i);
+            if (jsonElement.isJsonPrimitive()) {
+                JsonPrimitive jsonPrimitive = jsonElement.getAsJsonPrimitive();
+                if (jsonPrimitive.isString()) {
+                    System.out.println(jsonPrimitive.getAsString());
+                } else if (jsonPrimitive.isNumber()) {
+                    System.out.println(jsonPrimitive.getAsDouble());
+                }
             }
         }
     }
