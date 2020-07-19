@@ -11,12 +11,12 @@ public class Person {
     private Integer id;
     private String name;
     private Date birthday;
-    private boolean marry;
+    private Boolean marry;
 
     public Person() {
     }
 
-    public Person(Integer id, String name, Date birthday, boolean marry) {
+    public Person(Integer id, String name, Date birthday, Boolean marry) {
         this.id = id;
         this.name = name;
         this.birthday = birthday;
@@ -47,11 +47,11 @@ public class Person {
         this.birthday = birthday;
     }
 
-    public boolean isMarry() {
+    public Boolean isMarry() {
         return marry;
     }
 
-    public void setMarry(boolean marry) {
+    public void setMarry(Boolean marry) {
         this.marry = marry;
     }
 

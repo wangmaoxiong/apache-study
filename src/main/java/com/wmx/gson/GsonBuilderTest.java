@@ -45,15 +45,14 @@ public class GsonBuilderTest {
 
         Person person = new Person();
         person.setId(100);
-        person.setName("中国");
         person.setBirthday(new Date());
 
         String toJson = gson.toJson(person);
-        //{"Id":100,"Name":"中国","Birthday":"2020-07-16 08:49:08","Marry":false}
+        //{"id":100,"name":null,"birthday":"2020-07-19 11:37:35","marry":null}
         System.out.println(toJson);
 
         Person person1 = gson.fromJson(toJson, Person.class);
-        //Person{id=100, name='中国', birthday=Thu Jul 16 08:49:08 CST 2020, marry=false}
+        //Person{id=100, name='null', birthday=Sun Jul 19 11:37:35 CST 2020, marry=null}
         System.out.println(person1);
     }
 }
