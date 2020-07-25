@@ -12,7 +12,7 @@ import java.util.Set;
 /**
  * {@link Multimap} 一个 key 对应多个 value.
  * 1、JDK 提供给的 Map 是一个键，一个值，一对一的，而实际开发中，经常遇到一个 KEY 多个 VALUE 的情况（比如一个分类下的书本），通常使用 Map<k,List<v>>
- * 2、Multimap 提供一个 key 对多个值，它的值其实就是 java.util.Collection 类型，用于存储多个值
+ * 2、Multimap 提供一个 key 对多个值.
  * 3、Multimap 的实现类有：ArrayListMultimap、HashMultimap、LinkedHashMultimap、TreeMultimap、ImmutableMultimap......
  * 4、操作上与 jdk 自带的 map 基本一样。
  *
