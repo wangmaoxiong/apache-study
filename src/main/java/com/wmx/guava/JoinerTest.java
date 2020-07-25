@@ -1,4 +1,4 @@
-package com.wmx.apachestudy.guava;
+package com.wmx.guava;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
