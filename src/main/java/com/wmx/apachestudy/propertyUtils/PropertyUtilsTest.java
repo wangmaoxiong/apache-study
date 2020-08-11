@@ -39,6 +39,24 @@ public class PropertyUtilsTest {
     }
 
     /**
+     * copyProperties(final Object dest, final Object orig)：可以实现克隆的功能，将一个对象克隆一个一模一样的出来.
+     * 1）即使 orig 对象的属性关联了其它对象，同样可以一并复制.
+     */
+    public void testCopyProperties2() {
+        try {
+            Person person = new Person(9528, "华福", LocalDateTime.now(), false, null);
+            List<Person> personList = new ArrayList<>();
+            personList.add(person);
+            Department department = new Department(1000, "开发部", personList);
+            Department cloneDept = new Department();
+            PropertyUtils.copyProperties(cloneDept, department);
+            System.out.println(cloneDept);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Map<String, Object> describe(final Object bean): 将 bean 对象的属性提取到 map 中
      * 1）bean 对象中只有提供了 getXxx 方法的属性才会提取，否则不提取
      */
@@ -95,24 +113,6 @@ public class PropertyUtilsTest {
             PropertyDescriptor indexedProperty = (PropertyDescriptor) PropertyUtils.getIndexedProperty(pds, null, 1);
             System.out.println(indexedProperty);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * copyProperties(final Object dest, final Object orig)：可以实现克隆的功能，将一个对象克隆一个一模一样的出来.
-     * 1）即使 orig 对象的属性关联了其它对象，同样可以一并复制.
-     */
-    public void testClone() {
-        try {
-            Person person = new Person(9528, "华福", LocalDateTime.now(), false, null);
-            List<Person> personList = new ArrayList<>();
-            personList.add(person);
-            Department department = new Department(1000, "开发部", personList);
-            Department cloneDept = new Department();
-            PropertyUtils.copyProperties(cloneDept, department);
-            System.out.println(cloneDept);
         } catch (Exception e) {
             e.printStackTrace();
         }
