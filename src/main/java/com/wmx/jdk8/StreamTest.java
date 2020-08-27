@@ -76,10 +76,11 @@ public class StreamTest {
     }
 
     /**
-     * Stream<R> map(Function<? super T, ? extends R> mapper): 元素映射，实质就是用于处理元素，然后返回结果，这是一个中间操作，返回一个结果流
+     * Stream<R> map(Function<? super T, ? extends R> mapper)
+     * 1、元素映射，实质就是用于处理元素，然后返回处理结果，这是一个中间操作，返回一个结果流
      */
     @Test
-    public void map() {
+    public void map1() {
         List<String> list = Arrays.asList("how", "are", "you", ",", "I", "am", "fine", "!");
         //对每个单词的首字母转大写
         Stream<String> stringStream = list.stream().map(item -> {
@@ -89,8 +90,36 @@ public class StreamTest {
                 return item;
             }
         });
+        //[how, are, you, ,, I, am, fine, !]
+        System.out.println(list);
+        //How Are You , I Am Fine !
         stringStream.forEach(item -> System.out.print(item + " "));
     }
+
+    @Test
+    public void map2() {
+        List<Map<String, Object>> dataList = new ArrayList<>();
+        Map<String, Object> map1 = new HashMap<>(2);
+        Map<String, Object> map2 = new HashMap<>(2);
+        map1.put("c21", "新增");
+        map2.put("c21", "既往");
+        dataList.add(map1);
+        dataList.add(map2);
+
+        Stream<Map<String, Object>> mapStream = dataList.stream().map(item -> {
+            item.put("c21", "离休");
+            return item;
+        });
+
+        //[{c21=新增}, {c21=既往}]
+        System.out.println(dataList);
+
+        List<Map<String, Object>> mapList = mapStream.collect(Collectors.toList());
+        //[{c21=离休}, {c21=离休}]
+        System.out.println(mapList);
+
+    }
+
 
     /**
      * Stream<T> of(T... values) ：将集合转为有顺序的流，可将多个集合合成一个流
