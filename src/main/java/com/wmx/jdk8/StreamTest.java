@@ -32,7 +32,7 @@ public class StreamTest {
      * 2、Stream<E> stream()：将集合转为流
      */
     @Test
-    public void forEach() {
+    public void forEach1() {
         List<String> list = Arrays.asList("长沙", "深圳", "武汉", "伊犁", "洛阳", "开封");
         // 方式一：增强 for 循环
         for (String item : list) {
@@ -42,6 +42,24 @@ public class StreamTest {
         // 方式二：JDK 1.8 java.util.stream.Stream.forEach(Consumer<? super T> action)
         //长沙	深圳	武汉	伊犁	洛阳	开封
         list.stream().forEach(item -> System.out.print(item + "\t"));
+    }
+
+    /**
+     * 遍历元素的时候，修改元素的值。比如遍历修改 List 中的对象
+     */
+    @Test
+    public void forEach2() {
+        List<Map<String, Object>> dataList = new ArrayList<>();
+        Map<String, Object> map1 = new HashMap<>();
+        Map<String, Object> map2 = new HashMap<>();
+        map1.put("c20", "新增");
+        map2.put("c20", "既往");
+        dataList.add(map1);
+        dataList.add(map2);
+
+        dataList.stream().forEach(item -> item.put("c20", "删除"));
+        //[{c20=删除}, {c20=删除}]
+        System.out.println(dataList);
     }
 
     /**
