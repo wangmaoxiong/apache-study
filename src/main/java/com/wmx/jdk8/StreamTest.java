@@ -202,11 +202,17 @@ public class StreamTest {
     @Test
     public void sorted() {
         List<String> list = Arrays.asList("c", "e", "a", "d", "b");
-        // a	b	c	d	e
-        list.stream().sorted(Comparator.naturalOrder()).forEach(item -> System.out.print(item + "\t"));
-        System.out.println("\n倒序：");
-        // e	d	c	b	a
-        list.stream().sorted(Comparator.reverseOrder()).forEach(item -> System.out.print(item + "\t"));
+
+        List<String> collect1 = list.stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+        //[a, b, c, d, e]
+        System.out.println("顺序：" + collect1);
+
+        List<String> collect2 = list.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
+        //倒序：[e, d, c, b, a]
+        System.out.println("倒序：" + collect2);
+        //源列表：[c, e, a, d, b]
+        System.out.println("源列表：" + list);
+
     }
 
     /**
