@@ -21,7 +21,7 @@ import java.util.List;
  * @date 2020/11/21 15:30
  */
 
-public class IOTest {
+public class FileUtilsTest {
     /**
      * write(final File file, final CharSequence data, final Charset encoding)
      * 1、file：写入的文件对象，路径不存在时，自动新建
