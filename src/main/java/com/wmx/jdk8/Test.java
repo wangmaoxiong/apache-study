@@ -7,16 +7,11 @@ package com.wmx.jdk8;
  */
 public class Test {
     public static void main(String[] args) {
-        String version = UserService.showVersion();
-        //app:v2.0
-        System.out.println(version);
 
-        UserService userService = new UserServiceImpl();
-        String info = userService.getInfo();
-        //Sun Jun 21 15:35:35 CST 2020: OK!
-        System.out.println(info);
+        StringBuffer sql = new StringBuffer();
+        sql.append("select * from ").append("Gbm_Bs_Ageninfo").append(" a").append(" where a.agency_id = ").append(20803).append(" and a.top_org_id = ").append(430000);
+        System.out.println(sql);
 
-        //1001:e175355c-761e-4a6e-bf74-0694295297a8
-        System.out.println(userService.getNameById(1001));
+        System.out.println("AE2AE001C4BC4C259CBC8CFF443E5801".length());
     }
 }
