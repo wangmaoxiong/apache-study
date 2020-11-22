@@ -242,26 +242,4 @@ public class FileUtilsTest {
         String fileToString = FileUtils.readFileToString(file, Charset.forName("UTF-8"));
         System.out.println(fileToString);
     }
-
-    /**
-     * 读取本地文件文本内容
-     *
-     * @param file ：待读取的文件
-     * @return ：返回读取的文本内容
-     */
-    public static String readLocalFile(File file) {
-        String feedback = "";
-        try {
-            if (file.exists() && file.isFile()) {
-                // 一共重载了3个方法：
-                // readFileToString(File file) ：以默认编码读取文件内容
-                // readFileToString(File file, String encoding)
-                // readFileToString(File file, Charset encoding)
-                feedback = FileUtils.readFileToString(file, "gbk");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return feedback;
-    }
 }
