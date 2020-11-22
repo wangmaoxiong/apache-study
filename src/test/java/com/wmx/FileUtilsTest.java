@@ -2,6 +2,10 @@ package com.wmx;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.LineIterator;
+import org.apache.commons.io.filefilter.PrefixFileFilter;
+import org.apache.commons.io.filefilter.SizeFileFilter;
+import org.apache.commons.io.filefilter.SuffixFileFilter;
+import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.junit.Test;
 
 import javax.swing.filechooser.FileSystemView;
@@ -208,23 +212,6 @@ public class FileUtilsTest {
     }
 
     /**
-     * Collection<File> listFiles(final File directory, final String[] extensions, final boolean recursive)
-     * 查找给定目录（及其子目录）中与扩展名数组匹配的文件。
-     * directory 要搜索的目录
-     * extensions：要过滤的扩展数组，例如{“java”、“xml”}，为 null，返回所有文件。
-     * ecursive：true 表示搜索所有子目录
-     */
-    @Test
-    public void listFiles() {
-        File homeDirectory = FileSystemView.getFileSystemView().getHomeDirectory();
-        File file = new File(homeDirectory, "wmx");
-        Collection<File> fileCollection = FileUtils.listFiles(file, null, true);
-        for (File file1 : fileCollection) {
-            System.out.println(file1.getAbsoluteFile());
-        }
-    }
-
-    /**
      * String readFileToString(final File file, final String encoding)
      * String readFileToString(final File file, final Charset encoding)
      * String readFileToString(final File file)
@@ -241,5 +228,113 @@ public class FileUtilsTest {
         File file = new File(homeDirectory, "wmx/write4.txt");
         String fileToString = FileUtils.readFileToString(file, Charset.forName("UTF-8"));
         System.out.println(fileToString);
+    }
+
+    /**
+     * Collection<File> listFiles(final File directory, final String[] extensions, final boolean recursive)
+     * 查找给定目录（及其子目录）中与扩展名数组匹配的文件。
+     * directory 要搜索的目录
+     * extensions：要过滤的扩展数组，例如{“java”、“xml”}，为 null，返回所有文件。
+     * ecursive：true 表示搜索所有子目录
+     */
+    @Test
+    public void listFiles1() {
+        File homeDirectory = FileSystemView.getFileSystemView().getHomeDirectory();
+        File file = new File(homeDirectory, "wmx");
+        Collection<File> fileCollection = FileUtils.listFiles(file, null, true);
+        for (File file1 : fileCollection) {
+            System.out.println(file1.getAbsoluteFile());
+        }
+    }
+
+    /**
+     * 遍历目录下的所有文件
+     */
+    @Test
+    public void listFiles2() {
+        File homeDirectory = FileSystemView.getFileSystemView().getHomeDirectory();
+        File targetDir = new File(homeDirectory, "wmx");
+        /**
+         * listFiles(final File directory, final IOFileFilter fileFilter, final IOFileFilter dirFilter)
+         * directory：不要为 null、不要是文件、不要不存在
+         * fileFilter：文件过滤 参数如果为 FalseFileFilter.FALSE ，则不会查询任何文件
+         * dirFilter：目录过滤 参数如果为 FalseFileFilter.FALSE , 则只获取目标文件夹下的一级文件，而不会迭代获取子文件夹下的文件
+         */
+        Collection<File> fileCollection = FileUtils.listFiles(targetDir,
+                TrueFileFilter.INSTANCE, TrueFileFilter.INSTANCE);
+        for (File file : fileCollection) {
+            System.out.println(">>> " + file.getPath());
+        }
+    }
+
+    /**
+     * 遍历目录下所有以指定字符开头的文件
+     */
+    @Test
+    public void listFiles3() {
+        File homeDirectory = FileSystemView.getFileSystemView().getHomeDirectory();
+        File targetDir = new File(homeDirectory, "wmx");
+        String[] prefixArr = {"write", "2020"};//查询以这些字符开头的文件
+        PrefixFileFilter prefixFileFilter = prefixArr != null ? new PrefixFileFilter(prefixArr) : new PrefixFileFilter("");
+        /**
+         * listFiles(final File directory, final IOFileFilter fileFilter, final IOFileFilter dirFilter)
+         * directory：不要为 null、不要是文件、不要不存在
+         * fileFilter：文件过滤
+         *      1）PrefixFileFilter：为文件名前缀过滤器
+         *      2）PrefixFileFilter 构造器参数可以是 String、List<String>、String[] 等
+         *      3）如果参数为空，则表示不进行过滤，等同于 TrueFileFilter.INSTANCE
+         *
+         * dirFilter：目录过滤
+         *      TrueFileFilter.INSTANCE：表示迭代获取所有子孙目录
+         *      FalseFileFilter.FALSE：表示只获取目标目录下一级，不进行迭代
+         */
+        Collection<File> fileCollection = FileUtils.listFiles(targetDir, prefixFileFilter, TrueFileFilter.INSTANCE);
+        for (File file : fileCollection) {
+            System.out.println(">>> " + file.getPath());
+        }
+    }
+
+    /**
+     * 遍历目录下所有以指定字符结尾的文件
+     */
+    @Test
+    public void listFiles4() {
+        File homeDirectory = FileSystemView.getFileSystemView().getHomeDirectory();
+        File targetDir = new File(homeDirectory, "wmx");
+        String[] suffixArr = {".txt", ".jpg"};//查询以这些字符结尾的文件
+
+        /**
+         * SuffixFileFilter 指定的后缀可以是任意字符，如文件 overview-tree.html，后缀过滤器字符 html、.html、tree.html 等都能匹配
+         * */
+        SuffixFileFilter suffixFileFilter = suffixArr != null ? new SuffixFileFilter(suffixArr) : new SuffixFileFilter("");
+        Collection<File> fileCollection = FileUtils.listFiles(targetDir, suffixFileFilter, TrueFileFilter.INSTANCE);
+        for (File file : fileCollection) {
+            System.out.println(">>> " + file.getPath());
+        }
+    }
+
+    /**
+     * 遍历目录下所有大于或者小于指定大小的文件
+     */
+    @Test
+    public void listFiles5() {
+        File homeDirectory = FileSystemView.getFileSystemView().getHomeDirectory();
+        File targetDir = new File(homeDirectory, "wmx");
+        Long fileSize = FileUtils.ONE_MB;//文件判断大小，单位 字节
+        boolean acceptLarger = false;//为 true，则表示获取大于等于 fileSize 的文件,false 相反
+
+        /**
+         * SizeFileFilter(final long size, final boolean acceptLarger)
+         * 1）文件大小过滤器
+         * 2）size，表示判断的依据点
+         * 3）acceptLarger：为 true，则表示获取  大于等于 size 的文件为 false ，则表示获取 小于 size 的文件
+         * 4）单位是字节
+         */
+        SizeFileFilter sizeFileFilter = new SizeFileFilter(fileSize, acceptLarger);
+        Collection<File> fileCollection = FileUtils.listFiles(targetDir, sizeFileFilter, TrueFileFilter.INSTANCE);
+        for (File file : fileCollection) {
+            System.out.println(">>> " + file.getPath() + "\t" + file.length() +
+                    "\t" + FileUtils.byteCountToDisplaySize(file.length()));
+        }
     }
 }
