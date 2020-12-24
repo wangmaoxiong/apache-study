@@ -32,7 +32,19 @@ public class StringTest {
         String s = "万里'长城'！";
         String replace = s.replaceAll("['！]", "");
         System.out.println(s);//万里'长城'！
-        System.out.println(replace);//万里长城！
+        System.out.println(replace);//万里长城
+    }
+
+    /**
+     * replaceFirst(String regex, String replacement)
+     * 用给定的替换替换与给定的 regular expression匹配的此字符串的第一个子字符串。
+     */
+    @Test
+    public void replaceFirstAllTest() {
+        String s = "万里'长城'！";
+        String replace = s.replaceFirst("['！]", "");
+        System.out.println(s);//万里'长城'！
+        System.out.println(replace);//万里长城'！
     }
 
 }
