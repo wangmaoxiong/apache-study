@@ -59,4 +59,13 @@ public class StringTest {
         System.out.println(Arrays.asList(replace));//[万里, 长城, , 长又长]
     }
 
+    /**
+     * split(String regex, int limit) 将这个字符串拆分为给定的 regular expression的匹配。
+     */
+    @Test
+    public void split2() {
+        String s = "万里'长城'！长又长";
+        String[] replace = s.split("['！]", 2);
+        System.out.println(Arrays.asList(replace));//[万里, 长城'！长又长]
+    }
 }
