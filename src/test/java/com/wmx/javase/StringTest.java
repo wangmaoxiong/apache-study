@@ -2,6 +2,8 @@ package com.wmx.javase;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
 /**
  * java.lang.String API 测试类
  *
@@ -45,6 +47,16 @@ public class StringTest {
         String replace = s.replaceFirst("['！]", "");
         System.out.println(s);//万里'长城'！
         System.out.println(replace);//万里长城'！
+    }
+
+    /**
+     * split(String regex) 将此字符串分割为给定的 regular expression的匹配。
+     */
+    @Test
+    public void split() {
+        String s = "万里'长城'！长又长";
+        String[] replace = s.split("['！]");
+        System.out.println(Arrays.asList(replace));//[万里, 长城, , 长又长]
     }
 
 }
