@@ -14,6 +14,7 @@ import java.util.*;
  * @version 1.0
  * @date 2020/7/31 16:39
  */
+@SuppressWarnings("all")
 public class DeepCopyTest {
 
     @Test
@@ -156,23 +157,57 @@ public class DeepCopyTest {
     }
 
     /**
-     * 对象克隆。使用 java 序列化的方式将对象进行克隆。
+     * 对象深度克隆。使用 java 序列化的方式将对象进行克隆。
      *
      * @param src ：被克隆的对象，如 java bean，Set、List、Map 等等
      * @param <E> ：支持任意类型，如果是 java Bean，则必须实现 {@link Serializable} 接口实现序列化，否则报错
      * @return
-     * @throws IOException
-     * @throws ClassNotFoundException
      */
-    public static <E> E cloneObject(E src) throws IOException, ClassNotFoundException {
+    public static <E> E cloneObject(E src) {
         Assert.isTrue(!ObjectUtils.isEmpty(src), "参数不能为空");
-        ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
-        ObjectOutputStream out = new ObjectOutputStream(byteOut);
-        out.writeObject(src);
-        ByteArrayInputStream byteIn = new ByteArrayInputStream(byteOut.toByteArray());
-        ObjectInputStream in = new ObjectInputStream(byteIn);
-        E dest = (E) in.readObject();
+        E dest = null;
+        ObjectOutputStream out = null;
+        try {
+            ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+            out = new ObjectOutputStream(byteOut);
+            out.writeObject(src);
+            ByteArrayInputStream byteIn = new ByteArrayInputStream(byteOut.toByteArray());
+            ObjectInputStream in = new ObjectInputStream(byteIn);
+            dest = (E) in.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (out != null) {
+                try {
+                    out.flush();
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         return dest;
+    }
+
+    public static void main(String[] args) {
+        List<String> list = new ArrayList<>();
+        list.add("1");
+        list.add("2");
+        list.add("3");
+
+        Map<String, Object> dataMap = new HashMap<>();
+        dataMap.put("id", "9527");
+        dataMap.put("name", "华安");
+        dataMap.put("list", list);
+
+        Map<String, Object> cloneObject = DeepCopyTest.cloneObject(dataMap);
+        cloneObject.put("age", 33);
+        List<Object> cloneList = (List) cloneObject.get("list");
+        cloneList.add("5555");
+
+        System.out.println(dataMap);//{name=华安, id=9527, list=[1, 2, 3]}
+        System.out.println(cloneObject);//{name=华安, id=9527, list=[1, 2, 3, 5555], age=33}
+
     }
 
 }
