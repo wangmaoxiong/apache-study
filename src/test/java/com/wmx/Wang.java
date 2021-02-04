@@ -21,9 +21,12 @@ import java.util.Map;
 public class Wang {
 
     @Test
-    public void test1(){
+    public void test1() throws ParseException {
         String nowTime = DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss");
         System.out.println(nowTime);
+
+        System.out.println(LocalDate.now());
+        System.out.println(DateUtils.parseDate("2299-12-12", "yyyy-MM-dd"));
     }
 
     @Test

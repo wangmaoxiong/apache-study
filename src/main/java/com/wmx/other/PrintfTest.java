@@ -15,6 +15,7 @@ import java.util.Date;
  * args：表示待输出的数据对象
  * </p>
  */
+@SuppressWarnings("all")
 public class PrintfTest {
 
     /**
@@ -22,7 +23,6 @@ public class PrintfTest {
      */
     @Test
     public void test1() {
-
         /**
          * %s：表示以字符串(String)形式输出
          * %S ：表示将字符串以大写形式输出
@@ -73,6 +73,10 @@ public class PrintfTest {
         System.out.printf("%o、%o, ", integers[0], integers[1]);
         System.out.printf("%x、%x, ", integers[0], integers[1]);
         System.out.printf("%X、%X", integers[0], integers[1]);
+
+        System.out.println();
+        //如下表示输出结果长度最低不能少于两位，否则前面用 0 补齐
+        System.out.printf("%02d、%02d、%02d", 1, 22, 333);//01、22、333。
     }
 
     /**
