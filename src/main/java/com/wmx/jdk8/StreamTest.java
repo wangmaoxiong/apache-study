@@ -120,6 +120,26 @@ public class StreamTest {
 
     }
 
+    /**
+     * 提取 List Map 中指定字段的值
+     */
+    @Test
+    @SuppressWarnings("all")
+    public void map3() {
+        List<Map<String, Object>> dataList = new ArrayList<>();
+        Map<String, Object> map1 = new HashMap<>(2);
+        Map<String, Object> map2 = new HashMap<>(2);
+
+        map1.put("c21", "新增");
+        map2.put("c21", "删除");
+        dataList.add(map1);
+        dataList.add(map2);
+
+        List<Object> keySumList = dataList.stream().map(e -> e.get("c21")) .collect(Collectors.toList());
+        System.out.println(keySumList);
+
+    }
+
 
     /**
      * Stream<T> of(T... values) ：将集合转为有顺序的流，可将多个集合合成一个流
