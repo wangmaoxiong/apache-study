@@ -137,22 +137,23 @@ public class NumberUtilsTest {
      * boolean isParsable(final String str)
      * 1、检查字符串是否可以解析为数字，即 {@link Integer#parseInt(String)},{@link Long#parseLong(String)}, {@link Float#parseFloat(String),{@link Double#parseDouble(String)}.
      * 2、这个方法可以防止调用上面的方法时出现  {@link java.text.ParseException}
-     * 3、注意只支持 10 进制，支持正负数，不支持 8进制、16进制、不支持科学计数法，也不支持类型限定符（如 3000L，3.14F）
+     * 3、注意只支持 10 进制，支持正负数，支持小数，不支持 8进制、16进制、不支持科学计数法，也不支持类型限定符（如 3000L，3.14F）
      */
     @Test
+    @SuppressWarnings("all")
     public void test8() {
-        System.out.printf("100=%b、", NumberUtils.isParsable("100"));
-        System.out.printf("110L=%b、", NumberUtils.isParsable("110L"));
-        System.out.printf("100.98=%b、", NumberUtils.isParsable("100.98"));
-        System.out.printf("-110.88F=%b、", NumberUtils.isParsable("-110.88F"));
-        System.out.printf("110.88F=%b、", NumberUtils.isParsable("110.88F"));
-        System.out.printf("0X89F9=%b%n", NumberUtils.isParsable("0X89F9"));
+        System.out.printf("100=%b、", NumberUtils.isParsable("100"));//100=true
+        System.out.printf("110L=%b、", NumberUtils.isParsable("110L"));//110L=false
+        System.out.printf("100.98=%b、", NumberUtils.isParsable("100.98"));//100.98=true
+        System.out.printf("-110.88F=%b、", NumberUtils.isParsable("-110.88F"));//-110.88F=false
+        System.out.printf("110.88F=%b、", NumberUtils.isParsable("110.88F"));//110.88F=false
+        System.out.printf("0X89F9=%b%n", NumberUtils.isParsable("0X89F9"));//0X89F9=false
 
-        System.out.printf("-076=%b、", NumberUtils.isParsable("-076"));
-        System.out.printf("098=%b、", NumberUtils.isParsable("098"));
-        System.out.printf("8.788006e+05=%b、", NumberUtils.isParsable("8.788006e+05"));
-        System.out.printf("1001.=%b、", NumberUtils.isParsable("1001."));
-        System.out.printf("1001.=%b", NumberUtils.isParsable("1001.x"));
+        System.out.printf("-076=%b、", NumberUtils.isParsable("-076"));//-076=true
+        System.out.printf("098=%b、", NumberUtils.isParsable("098"));//098=true
+        System.out.printf("8.788006e+05=%b、", NumberUtils.isParsable("8.788006e+05"));//8.788006e+05=false
+        System.out.printf("1001.=%b、", NumberUtils.isParsable("1001."));//1001.=false
+        System.out.printf("1001.x=%b", NumberUtils.isParsable("1001.x"));//1001.x=false
     }
 
     /**
