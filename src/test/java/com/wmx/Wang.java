@@ -61,4 +61,10 @@ public class Wang {
             System.out.println(2);
         }
     }
+
+
+    @Test
+    public void test6(){
+        System.out.println("12410000777999327p".length());
+    }
 }
