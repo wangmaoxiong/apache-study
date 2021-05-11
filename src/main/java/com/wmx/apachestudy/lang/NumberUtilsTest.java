@@ -124,13 +124,14 @@ public class NumberUtilsTest {
      */
     @Test
     public void test7() {
-        //w100=false、100=true、-100=false、100.0=false、0=true、null=false
+        //w100=false、100=true、-100=false、100.0=false、0=true、null=false、0088787878544534300=true
         System.out.printf("w100=%b、", NumberUtils.isDigits("w100"));
         System.out.printf("100=%b、", NumberUtils.isDigits("100"));
         System.out.printf("-100=%b、", NumberUtils.isDigits("-100"));
         System.out.printf("100.0=%b、", NumberUtils.isDigits("100.0"));
         System.out.printf("0=%b、", NumberUtils.isDigits("0"));
         System.out.printf("null=%b", NumberUtils.isDigits(null));
+        System.out.printf("、0088787878544534300=%b", NumberUtils.isDigits("0088787878544534300"));
     }
 
     /**
