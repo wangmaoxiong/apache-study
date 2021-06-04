@@ -129,6 +129,24 @@ public class GsonTest {
     }
 
     /**
+     * 将 List 格式化为 json 字符串后，再反序列化为 List<Map<String,Object> 对象
+     * 在开发中经常会遇到 将 List<POJO> 转为 List<Map<String,Object> 对象，或者将后者转为前者
+     */
+    @Test
+    public void fromJson7(){
+        String json = "[{\"id\":9527,\"name\":\"华安\",\"birthday\":\"Jul 13, 2020 8:46:18 PM\",\"marry\":true},{\"id\":8866,\"name\":\"宁王\",\"marry\":false}]";
+
+        List<Map<String,Object>> dataList = new Gson().fromJson(json,new TypeToken<List<Map<String,Object>>>() {}.getType());
+        System.out.println(dataList);
+
+        /**输出：
+         * [{id=9527.0, name=华安, birthday=Jul 13, 2020 8:46:18 PM, marry=true},
+         * {id=8866.0, name=宁王, marry=false}]
+         */
+    }
+
+
+    /**
      * 基本类型 转 Json 字符串
      * String toJson(Object src)
      * 1、将对象转为 json 格式的字符串，如 基本数据、POJO 对象、以及 Map、List 等
