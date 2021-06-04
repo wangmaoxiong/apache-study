@@ -189,4 +189,17 @@ public class ArrayUtilsTest {
         System.out.println(ArrayUtils.toString(ints));//{1,2,13,-1,5}
     }
 
+    /**
+     * boolean contains(final Object[] array, final Object objectToFind): 检查 objectToFind 是否在给定数组 array 中
+     */
+    @Test
+    public void test() {
+        String[] arrs = {"1", "22", "33", null};
+        System.out.println(ArrayUtils.contains(arrs, "1"));//true
+        System.out.println(ArrayUtils.contains(arrs, null));//true
+        System.out.println(ArrayUtils.contains(arrs, "rt"));//false
+        System.out.println(ArrayUtils.contains(null, null));//false
+    }
+
+
 }

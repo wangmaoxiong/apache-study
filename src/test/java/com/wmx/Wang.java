@@ -1,7 +1,7 @@
 package com.wmx;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
@@ -9,6 +9,7 @@ import org.junit.Test;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,21 +51,36 @@ public class Wang {
     }
 
     @Test
-    public void test3(){
-        System.out.println(NumberUtils.isDigits("001005"));
-        Map<String,Object> data = new HashMap<>();
-        System.out.println(data.get("id"));
-        System.out.println((String) data.get("id"));
-        if (StringUtils.equalsIgnoreCase("01",(String)data.get("id"))){
-            System.out.println(1);
-        } else {
-            System.out.println(2);
-        }
+    public void test3() throws ParseException {
+
+        String[] DATE_PARSE_PATTERNS = { "yyyy-MM", "yyyy/MM", "yyyy-MM-dd", "yyyy/MM/dd",
+                "yyyy-MM-dd HH:mm", "yyyy/MM/dd HH:mm", "yyyy-MM-dd HH:mm:ss", "yyyy/MM/dd HH:mm:ss" };
+
+        Date parseDate = DateUtils.parseDate("2021/3/3", DATE_PARSE_PATTERNS);
+        System.out.println(parseDate);
+
     }
 
 
     @Test
-    public void test6(){
-        System.out.println("12410000777999327p".length());
+    public void test() {
+        String[] arr = {"ds", "ffg", "787"};
+        ArrayList<String> arrayList = Lists.newArrayList(arr);
+        System.out.println(arrayList);
+
+        arrayList.add("00099");
+        System.out.println(arrayList);
+
+        Map<String, Object> dataMap = new HashMap<>();
+        dataMap.put("id", "1001");
+        dataMap.put("CODE", "001002");
+
+        System.out.println(dataMap.get("ID"));
+        System.out.println(dataMap.get("code"));
+
+        System.out.println(StringUtils.equals(dataMap.get("xxx") + "", "1"));
+
     }
+
+
 }

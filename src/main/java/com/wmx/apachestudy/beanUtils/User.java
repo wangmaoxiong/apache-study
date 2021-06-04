@@ -14,6 +14,16 @@ public class User {
     private String[] phones;
     private List<String> address;
 
+    public User() {
+    }
+
+    public User(Integer id, String name, String[] phones, List<String> address) {
+        this.id = id;
+        this.name = name;
+        this.phones = phones;
+        this.address = address;
+    }
+
     public List<String> getAddress() {
         return address;
     }

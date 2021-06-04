@@ -55,4 +55,24 @@ public class StringUtilsTest {
         System.out.println(StringUtils.substring(null, 0, 2));
     }
 
+    /**
+     * String abbreviate(final String str, final int maxWidth)：
+     * 对 str 字符串进行省略号缩写，maxWidth 表示长度，必须大于等于 4
+     */
+    @Test
+    public void test1() {
+        System.out.println(StringUtils.abbreviate("abcdefg", 7));//= "abcdefg"
+        System.out.println(StringUtils.abbreviate("abcdefg", 8));//= "abcdefg"
+        System.out.println(StringUtils.abbreviate("abcdefg", 4));//= "a..."
+        System.out.println(StringUtils.abbreviate("a", 3));// = a..
+        System.out.println(StringUtils.abbreviate("abcdefg", 3));// = IllegalArgumentException
+    }
+
+    @Test
+    public void test2(){
+    	String s = "因对方已经调入，[刘凤兰] 无法再撤销变动！ 证件号[530721198608213670] 的人员在本单位下已经存在，无法再撤销到上一版本！";
+        System.out.println(s.length());
+    }
+
+
 }
