@@ -145,6 +145,23 @@ public class GsonTest {
          */
     }
 
+    /**
+     * 将 字符串 反序列化为 List<POJO> 对象
+     */
+    @Test
+    public void fromJson8() {
+        String json = "[{\"id\":9527,\"name\":\"华安\",\"birthday\":\"Jul 13, 2020 8:46:18 PM\",\"marry\":true},{\"id\":8866,\"name\":\"宁王\",\"marry\":false}]";
+        Gson gson = new Gson();
+        List<Person> stringList = gson.fromJson(json, new TypeToken<List<Person>>() {}.getType());
+
+        /**
+         * 输出结果：
+         * [Person{id=9527, name='华安', birthday=Mon Jul 13 20:46:18 CST 2020, marry=true},
+         * Person{id=8866, name='宁王', birthday=null, marry=false}]
+         */
+        System.out.println(stringList);
+    }
+
 
     /**
      * 基本类型 转 Json 字符串
