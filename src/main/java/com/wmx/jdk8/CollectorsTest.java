@@ -14,6 +14,7 @@ import java.util.stream.Stream;
  * @version 1.0
  * @date 2021/6/11 21:54
  */
+@SuppressWarnings("all")
 public class CollectorsTest {
 
     /**
@@ -62,6 +63,29 @@ public class CollectorsTest {
          * 删除=[{c21=删除, address=武汉市, agency_code=304100}]}
          */
         System.out.println(objectListMap);
+    }
+
+    /**
+     * Collector<CharSequence, ?, String> joining(CharSequence delimiter)：将元素按遇到顺序 用指定的分隔符 连接起来
+     */
+    @Test
+    public void collectors4() {
+        List<String> stringList = Arrays.asList("12H", "43D", "78G", null, "909I");
+        String collect = "'" + stringList.stream().collect(Collectors.joining("','")) + "'";
+        //'12H','43D','78G','null','909I'
+        System.out.println(collect);
+    }
+
+    /**
+     * Collector<CharSequence, ?, String> joining(CharSequence delimiter,CharSequence prefix,CharSequence suffix)
+     * 将元素按遇到顺序 用指定的分隔符 连接起来，并指定开头与结尾的连接符
+     */
+    @Test
+    public void collectors5() {
+        List<String> stringList = Arrays.asList("121H", "431D", "728G", null, "9309I");
+        String collect = stringList.stream().collect(Collectors.joining("','", "'", "'"));
+        //'121H','431D','728G','null','9309I'
+        System.out.println(collect);
     }
 
 
