@@ -24,6 +24,7 @@ import java.util.stream.Stream;
  * @version 1.0
  * @date 2020/6/10 20:00
  */
+@SuppressWarnings("all")
 public class StreamTest {
 
     /**
@@ -67,13 +68,20 @@ public class StreamTest {
      * 1、需要实现 {@link Predicate} 接口中的 boolean test(T t) 方法,t 为流中的元素，返回 false 的元素将会丢弃.
      */
     @Test
-    public void filter() {
+    public void filter1() {
         List<Integer> integerList = Arrays.asList(8, 12, 28, 19, 22, 39, 33, 44, 54, 33, 23);
         integerList.stream().filter(integer -> integer >= 18 && integer < 45).forEach(integer -> {
             //28	19	22	39	33	44	33	23
             System.out.print(integer + "\t");
         });
     }
+
+    @Test
+    public void filter2() {
+        Object[] res = Stream.of(1, 2, 3, 4, 5, 6, 7, 8).filter(i -> i % 2 == 0).filter(i -> i > 3).toArray();
+        System.out.println(Arrays.toString(res));//[4, 6, 8]
+    }
+
 
     /**
      * Stream<R> map(Function<? super T, ? extends R> mapper)
@@ -135,7 +143,7 @@ public class StreamTest {
         dataList.add(map1);
         dataList.add(map2);
 
-        List<Object> keySumList = dataList.stream().map(e -> e.get("c21")) .collect(Collectors.toList());
+        List<Object> keySumList = dataList.stream().map(e -> e.get("c21")).collect(Collectors.toList());
         System.out.println(keySumList);
 
     }
@@ -146,7 +154,7 @@ public class StreamTest {
      * collect(Collector<? super T, A, R> collector)：将流转为集合
      */
     @Test
-    public void of() {
+    public void of1() {
         List<Integer> a = Arrays.asList(1, 2, 3);
         List<Integer> b = Arrays.asList(41, 52, 63);
         List<List<Integer>> collect = Stream.of(a, b).collect(Collectors.toList());
@@ -160,7 +168,9 @@ public class StreamTest {
     @Test
     public void of2() {
         Stream<String> stream = Stream.of("覆巢之下", "安有完卵", "天下攘攘", "皆为利往");
-        stream.forEach(item -> System.out.print(item + "\t"));
+
+        //覆巢之下,安有完卵,天下攘攘,皆为利往,
+        stream.forEach(item -> System.out.print(item + ","));
     }
 
     /**
