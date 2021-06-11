@@ -76,10 +76,28 @@ public class StreamTest {
         });
     }
 
+    /**
+     * 元素过滤
+     */
     @Test
     public void filter2() {
         Object[] res = Stream.of(1, 2, 3, 4, 5, 6, 7, 8).filter(i -> i % 2 == 0).filter(i -> i > 3).toArray();
         System.out.println(Arrays.toString(res));//[4, 6, 8]
+
+        List<Integer> collect = Stream.of(1, 2, 3, 4, 5, 6, 7, 8).filter(i -> i % 2 == 0).collect(Collectors.toList());
+        System.out.println(collect);
+    }
+
+    /**
+     * 排除掉 c21=删除 的单位
+     */
+    @Test
+    public void filter3() {
+        List<Map<String, Object>> dataList = this.getDataList();
+        System.out.println(dataList);
+
+        List<Map<String, Object>> collect = dataList.stream().filter(item -> !"删除".equals(item.get("c21"))).collect(Collectors.toList());
+        System.out.println(collect);
     }
 
 
@@ -132,22 +150,23 @@ public class StreamTest {
      * 提取 List Map 中指定字段的值
      */
     @Test
-    @SuppressWarnings("all")
     public void map3() {
         List<Map<String, Object>> dataList = new ArrayList<>();
         Map<String, Object> map1 = new HashMap<>(2);
         Map<String, Object> map2 = new HashMap<>(2);
+        Map<String, Object> map3 = new HashMap<>(2);
 
         map1.put("c21", "新增");
         map2.put("c21", "删除");
+        map3.put("c21", null);
+
         dataList.add(map1);
         dataList.add(map2);
+        dataList.add(map3);
 
         List<Object> keySumList = dataList.stream().map(e -> e.get("c21")).collect(Collectors.toList());
-        System.out.println(keySumList);
-
+        System.out.println(keySumList);//[新增, 删除, null]
     }
-
 
     /**
      * Stream<T> of(T... values) ：将集合转为有顺序的流，可将多个集合合成一个流
@@ -218,7 +237,7 @@ public class StreamTest {
      * toList(): 流转 List，还有 toSet()、toMap 等
      */
     @Test
-    public void collectors() {
+    public void collectors1() {
         List<String> list = Arrays.asList("a", "b", "c", "d", "e");
         Set<String> collect = list.stream().collect(Collectors.toSet());
         //a b c d e
@@ -394,4 +413,36 @@ public class StreamTest {
         //BigDecimal 类型流式求和：310
         System.out.println("BigDecimal 类型流式求和：" + result);
     }
+
+    private List<Map<String, Object>> getDataList() {
+        List<Map<String, Object>> dataList = new ArrayList<>();
+        Map<String, Object> map1 = new HashMap<>(8);
+        Map<String, Object> map2 = new HashMap<>(8);
+        Map<String, Object> map3 = new HashMap<>(8);
+        Map<String, Object> map4 = new HashMap<>(8);
+
+        map1.put("c21", "新增");
+        map1.put("agency_code", "201025");
+        map1.put("address", "深圳市");
+
+        map2.put("c21", "既往");
+        map2.put("agency_code", "002015");
+        map2.put("address", "长沙市");
+
+        map3.put("c21", "删除");
+        map3.put("agency_code", "304100");
+        map3.put("address", "武汉市");
+
+        map4.put("c21", "既往");
+        map4.put("agency_code", "324100");
+        map4.put("address", "深圳市");
+
+        dataList.add(map1);
+        dataList.add(map2);
+        dataList.add(map3);
+        dataList.add(map4);
+
+        return dataList;
+    }
+
 }
