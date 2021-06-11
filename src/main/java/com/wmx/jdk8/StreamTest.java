@@ -258,7 +258,7 @@ public class StreamTest {
     public void count() {
         Stream<String> stream = Stream.of("c", "e", "a", "d", "b");
         long count = stream.count();
-        System.out.println(count);
+        System.out.println(count);//5
     }
 
     /**
@@ -266,7 +266,7 @@ public class StreamTest {
      * Optional<T> max(Comparator<? super T> comparator) ：获取元素中的最大值
      */
     @Test
-    public void minAndMax() {
+    public void minAndMax1() {
         List<Integer> list = Arrays.asList(31, 22, 133, 465, 125);
         // Optional<T> min(Comparator<? super T> comparator);
         Optional<Integer> optional = list.stream().min(Comparator.naturalOrder());

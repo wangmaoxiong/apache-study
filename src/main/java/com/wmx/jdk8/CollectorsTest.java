@@ -22,7 +22,7 @@ public class CollectorsTest {
      * toList(): 流转 List，还有 toSet()、toMap 等
      */
     @org.junit.Test
-    public void collectors1() {
+    public void toSet1() {
         List<String> list = Arrays.asList("a", "b", "c", "d", "e");
         Set<String> collect = list.stream().collect(Collectors.toSet());
         //a b c d e
@@ -34,7 +34,7 @@ public class CollectorsTest {
      * 1、对元流中的元素进行分组，值相同的视作为一组
      */
     @org.junit.Test
-    public void collectors2() {
+    public void groupingBy1() {
         Map<Integer, List<Integer>> integerListMap = Stream.of(1, 3, 23, 45, 32, 12, 44, 45, 32, 3, 3).collect(Collectors.groupingBy(item -> item));
         //{32=[32, 32], 1=[1], 3=[3, 3, 3], 23=[23], 44=[44], 12=[12], 45=[45, 45]}
         System.out.println(integerListMap);
@@ -45,7 +45,7 @@ public class CollectorsTest {
      * 1、对元流中的元素进行分组
      */
     @Test
-    public void collectors3() {
+    public void groupingBy2() {
         List<Map<String, Object>> dataList = this.getDataList();
         /**
          * [{c21=新增, address=深圳市, agency_code=201025},
@@ -88,6 +88,32 @@ public class CollectorsTest {
         System.out.println(collect);
     }
 
+    /**
+     * <T> Collector<T, ?, Long> counting()：统计输入元素的数量。如果不存在元素，则结果为0。
+     */
+    @Test
+    public void counting(){
+        List<String> stringList = Arrays.asList("121H", "431D", "728G", null, "9309I");
+        Long counting = stringList.stream().collect(Collectors.counting());
+        System.out.println(counting);//5
+    }
+
+    /**
+     *  <T> Collector<T, ?, Optional<T>> maxBy(Comparator<? super T> comparator) ：通过比较器获取最大值
+     *  <T> Collector<T, ?, Optional<T>> minBy(Comparator<? super T> comparator) ：通过比较器获取最小值
+     */
+    @Test
+    public void maxBy(){
+        List<Integer> integerList1 = Arrays.asList(1, 0, -10, 9, 8, 100, 200, -80);
+        //获取集合中的最大值，不存在时返回 0
+        Optional<Integer> optionalInteger = integerList1.stream().collect(Collectors.maxBy(Comparator.naturalOrder()));
+        System.out.println(optionalInteger.orElse(0));//200
+
+        //获取集合中的最小值，不存在时返回 0，Collectors.minBy、Collectors.maxBy 排序取值時，元素不能為 null，否则异常
+        List<Integer> integerList2 = Arrays.asList(1, 0, -10, 9, null, 100, 200, -80);
+        Integer integer = integerList2.stream().filter(item -> Optional.ofNullable(item).isPresent()).collect(Collectors.minBy(Comparator.naturalOrder())).orElse(0);
+        System.out.println(integer);//-80
+    }
 
     private List<Map<String, Object>> getDataList() {
         List<Map<String, Object>> dataList = new ArrayList<>();
