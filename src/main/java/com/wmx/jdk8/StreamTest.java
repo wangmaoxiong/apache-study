@@ -245,6 +245,42 @@ public class StreamTest {
     }
 
     /**
+     * Collector<T, ?, Map<K, List<T>>> groupingBy(Function<? super T, ? extends K> classifier)
+     * 1、对元流中的元素进行分组，值相同的视作为一组
+     */
+    @Test
+    public void collectors2() {
+        Map<Integer, List<Integer>> integerListMap = Stream.of(1, 3, 23, 45, 32, 12, 44, 45, 32, 3, 3).collect(Collectors.groupingBy(item -> item));
+        //{32=[32, 32], 1=[1], 3=[3, 3, 3], 23=[23], 44=[44], 12=[12], 45=[45, 45]}
+        System.out.println(integerListMap);
+    }
+
+    /**
+     * Collector<T, ?, Map<K, List<T>>> groupingBy(Function<? super T, ? extends K> classifier)
+     * 1、对元流中的元素进行分组
+     */
+    @Test
+    public void collectors3() {
+        List<Map<String, Object>> dataList = this.getDataList();
+        /**
+         * [{c21=新增, address=深圳市, agency_code=201025},
+         * {c21=既往, address=长沙市, agency_code=002015},
+         * {c21=删除, address=武汉市, agency_code=304100},
+         * {c21=既往, address=深圳市, agency_code=324100}]
+         */
+        System.out.println(dataList);
+
+        // 根据 c21 的值进行分组，c21 值相同的元素作为一组
+        Map<Object, List<Map<String, Object>>> objectListMap = dataList.stream().collect(Collectors.groupingBy(item -> item.get("c21")));
+        /**
+         * {既往=[{c21=既往, address=长沙市, agency_code=002015}, {c21=既往, address=深圳市, agency_code=324100}],
+         * 新增=[{c21=新增, address=深圳市, agency_code=201025}],
+         * 删除=[{c21=删除, address=武汉市, agency_code=304100}]}
+         */
+        System.out.println(objectListMap);
+    }
+
+    /**
      * Stream<T> sorted(Comparator<? super T> comparator) :排序操作
      * {@link Comparator} 用于比较的函数，naturalOrder 顺序排序，reverseOrder 倒序排序
      */
