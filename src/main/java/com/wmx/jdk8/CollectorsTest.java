@@ -66,6 +66,55 @@ public class CollectorsTest {
     }
 
     /**
+     * Collector<T, ?, Map<K, List<T>>> groupingBy(Function<? super T, ? extends K> classifier)
+     * 1、对元流中的元素进行分组
+     */
+    @Test
+    public void groupingBy3() {
+        List<Map<String, Object>> dataList = this.getDataList();
+
+        Map<String, List<Map<String, Object>>> collect = dataList.stream().collect(Collectors.groupingBy(map -> {
+            Optional<Object> c22 = Optional.ofNullable(map.get("age"));
+            if (Integer.parseInt(c22.orElse("0") + "") < 30) {
+                return "少年";
+            } else if (Integer.parseInt(c22.orElse("0") + "") < 60) {
+                return "中年";
+            } else {
+                return "老年";
+            }
+        }));
+
+        /**
+         * {老年=[{c21=删除, address=武汉市, agency_code=304100, age=87}, {c21=既往, address=深圳市, agency_code=324100, age=90}],
+         * 中年=[{c21=新增, address=深圳市, agency_code=201025, age=30}, {c21=既往, address=长沙市, agency_code=002015, age=44}]}
+         */
+        System.out.println(collect);
+    }
+
+    @Test
+    public void partitioningBy() {
+        //Map<Boolean,List<Integer>>
+        Map<Boolean, List<Integer>> collect = Stream.of(0, 1, 0, 1).collect(Collectors.partitioningBy(integer -> integer == 0));
+        System.out.println(collect);//{false=[1, 1], true=[0, 0]}
+
+        //Map<Boolean,Set<Integer>>
+        //自定义下游收集器
+        Map<Boolean, Set<Integer>> collect1 = Stream.of(0, 1, 0, 1).collect(Collectors.partitioningBy(integer -> integer == 0, Collectors.toSet()));
+        System.out.println(collect1);//{false=[1], true=[0]}
+
+        // 提取出 删除 和 新增的 单位
+        List<Map<String, Object>> dataList = this.getDataList();
+        Map<Boolean, List<Map<String, Object>>> listMap = dataList.stream().filter(map -> !"既往".equals(map.get("c21")))
+                .collect(Collectors.partitioningBy(map -> "删除".equals(map.get("c21"))));
+        /**
+         * {false=[{c21=新增, address=深圳市, agency_code=201025, age=30}],
+         * true=[{c21=删除, address=武汉市, agency_code=304100, age=87}]}
+         */
+        System.out.println(listMap);
+    }
+
+
+    /**
      * Collector<CharSequence, ?, String> joining(CharSequence delimiter)：将元素按遇到顺序 用指定的分隔符 连接起来
      */
     @Test
@@ -173,7 +222,7 @@ public class CollectorsTest {
      * mapper：应用于每个输入值的映射函数
      */
     @Test
-    public void test() {
+    public void reducing() {
         // 累加操作，
         Integer integer = Stream.of(1, 22, 14, 25, 34, 33, 55, 43).collect(Collectors.reducing((i, j) -> i + j)).orElse(0);
         System.out.println(integer);//227
