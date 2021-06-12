@@ -150,9 +150,19 @@ public class CollectorsTest {
         System.out.println(summaryStatistics.getAverage());//33.7
     }
 
+    /**
+     * 求元素的平均值
+     * Collector<T, ?, Double> averagingLong(ToLongFunction<? super T> mapper)
+     * Collector<T, ?, Double> averagingDouble(ToDoubleFunction<? super T> mapper)
+     * Collector<T, ?, Double> averagingInt(ToIntFunction<? super T> mapper)
+     */
     @Test
     public void test() {
+        Double collect1 = Stream.of(1, 22, 14, 25, 34, 33, 55, 43).collect(Collectors.averagingLong(l -> l.longValue()));
+        System.out.println(collect1);//28.375
 
+        Double collect2 = Stream.of(11.2, 34.3, 34.3, 55.0).collect(Collectors.averagingDouble(d -> d.doubleValue()));
+        System.out.println(collect2);//33.7
     }
 
 
