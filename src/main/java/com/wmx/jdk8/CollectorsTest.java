@@ -115,10 +115,44 @@ public class CollectorsTest {
         System.out.println(integer);//-80
     }
 
+    /**
+     * <T> Collector<T, ?, Integer> summingInt(ToIntFunction<? super T> mapper)	对整数元素求和，如果不存在值，则返回 0
+     * <T> Collector<T, ?, Long> summingLong(ToLongFunction<? super T> mapper) 对长整数元素求和，如果不存在值，则返回 0
+     * <T> Collector<T, ?, Double> summingDouble(ToDoubleFunction<? super T> mapper) 对浮点型元素求和，如果不存在值，则返回 0
+     */
+    @Test
+    public void summingInt() {
+        Integer collect = Stream.of(1, 22, 14, 25, 34, 33, 55, 43).collect(Collectors.summingInt(integer -> Integer.valueOf(integer)));
+        System.out.println(collect);//227
+
+        Double collect2 = Stream.of(11.2, 34.3, 34.3, 55.0).collect(Collectors.summingDouble(Double::doubleValue));
+        System.out.println(collect2);//134.8
+    }
+
+    /**
+     * <T> Collector<T, ?, IntSummaryStatistics> summarizingInt(ToIntFunction<? super T> mapper)：对 int 整型求摘要统计信息，包含：
+     * getCount()：元素个数
+     * getSum()：求和
+     * getMin()：最小值
+     * getAverage()：平均值
+     * getMax())：最大值
+     * Collector<T, ?, LongSummaryStatistics> summarizingLong(ToLongFunction<? super T> mapper)
+     * Collector<T, ?, Double> summingDouble(ToDoubleFunction<? super T> mapper)
+     */
+    @Test
+    public void summarizingInt() {
+        IntSummaryStatistics intSummaryStatistics = Stream.of(1, 22, 14, 25, 34, 33, 55, 43).collect(Collectors.summarizingInt(Integer::intValue));
+        System.out.println(intSummaryStatistics);//IntSummaryStatistics{count=8, sum=227, min=1, average=28.375000, max=55}
+        System.out.println(intSummaryStatistics.getSum());//227
+
+        DoubleSummaryStatistics summaryStatistics = Stream.of(11.2, 34.3, 34.3, 55.0).collect(Collectors.summarizingDouble(dou -> dou.doubleValue()));
+        System.out.println(summaryStatistics);//DoubleSummaryStatistics{count=4, sum=134.800000, min=11.200000, average=33.700000, max=55.000000}
+        System.out.println(summaryStatistics.getAverage());//33.7
+    }
+
     @Test
     public void test() {
-        Integer collect = Stream.of(1, 22, 14, 25, 34, 33, 55, 43).collect(Collectors.summingInt(integer -> Integer.valueOf(integer)));
-        System.out.println(collect);
+
     }
 
 
