@@ -157,12 +157,43 @@ public class CollectorsTest {
      * Collector<T, ?, Double> averagingInt(ToIntFunction<? super T> mapper)
      */
     @Test
-    public void test() {
+    public void averagingLong() {
         Double collect1 = Stream.of(1, 22, 14, 25, 34, 33, 55, 43).collect(Collectors.averagingLong(l -> l.longValue()));
         System.out.println(collect1);//28.375
 
         Double collect2 = Stream.of(11.2, 34.3, 34.3, 55.0).collect(Collectors.averagingDouble(d -> d.doubleValue()));
         System.out.println(collect2);//33.7
+    }
+
+    /**
+     * Collector<T, ?, Optional<T>> reducing(BinaryOperator<T> op)，内部函数方法 R apply(T t, U u)
+     * apply 方法中的参数 t 表示当前计算的值，u 表示下一个元素，返回的值 r 会作为参数 t 继续传入，非常适合累加、累乘等等操作
+     * Collector<T, ?, T> reducing(T identity, BinaryOperator<T> op): identity 定义默认值，当没有元素时返回的值
+     * Collector<T, ?, U> reducing(U identity,Function<? super T, ? extends U> mapper,BinaryOperator<U> op)
+     * mapper：应用于每个输入值的映射函数
+     */
+    @Test
+    public void test() {
+        // 累加操作，
+        Integer integer = Stream.of(1, 22, 14, 25, 34, 33, 55, 43).collect(Collectors.reducing((i, j) -> i + j)).orElse(0);
+        System.out.println(integer);//227
+
+        List<Map<String, Object>> dataList = this.getDataList();
+        /**
+         * [{c21=新增, address=深圳市, agency_code=201025, age=30},
+         * {c21=既往, address=长沙市, agency_code=002015, age=44},
+         * {c21=删除, address=武汉市, agency_code=304100, age=87},
+         * {c21=既往, address=深圳市, agency_code=324100, age=90}]
+         */
+        System.out.println(dataList);
+
+        // 求年龄之和
+        Integer collect = dataList.stream().map(item -> (Integer) item.get("age")).collect(Collectors.reducing(0, (i, j) -> i + j));
+        System.out.println(collect);//251
+
+        // 求年龄之和
+        Integer age = dataList.stream().collect(Collectors.reducing(0, item -> (Integer) ((Map) item).get("age"), (i, j) -> i + j));
+        System.out.println(age);//251
     }
 
 
@@ -176,18 +207,22 @@ public class CollectorsTest {
         map1.put("c21", "新增");
         map1.put("agency_code", "201025");
         map1.put("address", "深圳市");
+        map1.put("age", 30);
 
         map2.put("c21", "既往");
         map2.put("agency_code", "002015");
         map2.put("address", "长沙市");
+        map2.put("age", 44);
 
         map3.put("c21", "删除");
         map3.put("agency_code", "304100");
         map3.put("address", "武汉市");
+        map3.put("age", 87);
 
         map4.put("c21", "既往");
         map4.put("agency_code", "324100");
         map4.put("address", "深圳市");
+        map4.put("age", 90);
 
         dataList.add(map1);
         dataList.add(map2);
