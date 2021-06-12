@@ -69,7 +69,7 @@ public class CollectorsTest {
      * Collector<CharSequence, ?, String> joining(CharSequence delimiter)：将元素按遇到顺序 用指定的分隔符 连接起来
      */
     @Test
-    public void collectors4() {
+    public void joining1() {
         List<String> stringList = Arrays.asList("12H", "43D", "78G", null, "909I");
         String collect = "'" + stringList.stream().collect(Collectors.joining("','")) + "'";
         //'12H','43D','78G','null','909I'
@@ -81,7 +81,7 @@ public class CollectorsTest {
      * 将元素按遇到顺序 用指定的分隔符 连接起来，并指定开头与结尾的连接符
      */
     @Test
-    public void collectors5() {
+    public void joining2() {
         List<String> stringList = Arrays.asList("121H", "431D", "728G", null, "9309I");
         String collect = stringList.stream().collect(Collectors.joining("','", "'", "'"));
         //'121H','431D','728G','null','9309I'
@@ -92,18 +92,18 @@ public class CollectorsTest {
      * <T> Collector<T, ?, Long> counting()：统计输入元素的数量。如果不存在元素，则结果为0。
      */
     @Test
-    public void counting(){
+    public void counting() {
         List<String> stringList = Arrays.asList("121H", "431D", "728G", null, "9309I");
         Long counting = stringList.stream().collect(Collectors.counting());
         System.out.println(counting);//5
     }
 
     /**
-     *  <T> Collector<T, ?, Optional<T>> maxBy(Comparator<? super T> comparator) ：通过比较器获取最大值
-     *  <T> Collector<T, ?, Optional<T>> minBy(Comparator<? super T> comparator) ：通过比较器获取最小值
+     * <T> Collector<T, ?, Optional<T>> maxBy(Comparator<? super T> comparator) ：通过比较器获取最大值
+     * <T> Collector<T, ?, Optional<T>> minBy(Comparator<? super T> comparator) ：通过比较器获取最小值
      */
     @Test
-    public void maxBy(){
+    public void maxBy() {
         List<Integer> integerList1 = Arrays.asList(1, 0, -10, 9, 8, 100, 200, -80);
         //获取集合中的最大值，不存在时返回 0
         Optional<Integer> optionalInteger = integerList1.stream().collect(Collectors.maxBy(Comparator.naturalOrder()));
@@ -114,6 +114,13 @@ public class CollectorsTest {
         Integer integer = integerList2.stream().filter(item -> Optional.ofNullable(item).isPresent()).collect(Collectors.minBy(Comparator.naturalOrder())).orElse(0);
         System.out.println(integer);//-80
     }
+
+    @Test
+    public void test() {
+        Integer collect = Stream.of(1, 22, 14, 25, 34, 33, 55, 43).collect(Collectors.summingInt(integer -> Integer.valueOf(integer)));
+        System.out.println(collect);
+    }
+
 
     private List<Map<String, Object>> getDataList() {
         List<Map<String, Object>> dataList = new ArrayList<>();
