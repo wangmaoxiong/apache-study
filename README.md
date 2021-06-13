@@ -1,5 +1,4 @@
-# apache-study
-apache 组件库练习
+# apache-study 项目介绍
 
 1、apache.commons.beanutils.BeanUtils ：实体工具类，比如快速复制对象属性
 
@@ -15,4 +14,18 @@ apache 组件库练习
 
 7、apache.commons.lang3.StringUtils：字符串工具类
 
-8、
+8、com.google.gson.Gson 工具库练习
+
+9、google guava 工具类练习
+
+10、com.fasterxml.jackson 工具库练习
+
+11、java jdk 8 API 练习
+
+12、org.springframework.util 工具库练习
+
+13、junit 5 API 练习
+
+
+
+
