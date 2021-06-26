@@ -68,4 +68,39 @@ public class StringUtilsTest {
         System.out.println(StringUtils.abbreviate("abcdefg", 3));// = IllegalArgumentException
     }
 
+    /**
+     * int compare(final String str1, final String str2)：按字典顺序比较两个字符串，不忽略大小写差异，null 值小于非 null值，两个 null 值视为相等.
+     * int compare(final String str1, final String str2, final boolean nullIsLess)：
+     * 按字典顺序比较两个字符串，不忽略大小写差异，null 值小于非 null值，两个 null 值视为相等, nullIsLess 指示 null 值是否小于非null值
+     * int compareIgnoreCase(final String str1, final String str2) ：按字典顺序比较两个字符串，忽略大小写差异，null 值小于非 null值，两个 null 值视为相等.
+     * int compareIgnoreCase(final String str1, final String str2, final boolean nullIsLess)
+     * * StringUtils.compareIgnoreCase(null, null)   = 0
+     * * StringUtils.compareIgnoreCase(null , "a")   < 0
+     * * StringUtils.compareIgnoreCase("a", null)    > 0
+     * * StringUtils.compareIgnoreCase("abc", "abc") = 0
+     * * StringUtils.compareIgnoreCase("abc", "ABC") = 0
+     * * StringUtils.compareIgnoreCase("a", "b")     < 0
+     * * StringUtils.compareIgnoreCase("b", "a")     > 0
+     * * StringUtils.compareIgnoreCase("a", "B")     < 0
+     * * StringUtils.compareIgnoreCase("A", "b")     < 0
+     * * StringUtils.compareIgnoreCase("ab", "ABC")  < 0
+     */
+    @Test
+    public void testCompareIgnoreCase() {
+        System.out.println(StringUtils.compareIgnoreCase("9", "445"));//5
+        System.out.println(StringUtils.compareIgnoreCase(null, "a"));//-1
+        System.out.println(StringUtils.compareIgnoreCase("abc", "ABC"));//0
+        System.out.println("--------------");
+        System.out.println(StringUtils.compare("abc", "ABC"));//32
+        System.out.println("--------------");
+        System.out.println(StringUtils.compare(null , "a", true));//-1
+        System.out.println(StringUtils.compare(null , "a", false));//1
+    }
+
+    @Test
+    public void test(){
+        System.out.println(StringUtils.isNumeric("09"));
+    }
+
+
 }
