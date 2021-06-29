@@ -337,4 +337,17 @@ public class FileUtilsTest {
                     "\t" + FileUtils.byteCountToDisplaySize(file.length()));
         }
     }
+
+    //获取发版路径下的脚本
+    @Test
+    public void getScriptPaths() {
+        File file = new File("E:\\wmx\\基础库发版\\20210629\\脚本");
+        Collection<File> fileCollection = FileUtils.listFiles(file, null, true);
+
+        String root = file.getAbsoluteFile().toString() + "\\";
+        int i = 0;
+        for (File file1 : fileCollection) {
+            System.out.println((++i) + " ==== " + file1.getAbsoluteFile().toString().replace(root, ""));
+        }
+    }
 }
