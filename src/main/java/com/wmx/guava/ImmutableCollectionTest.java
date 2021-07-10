@@ -7,8 +7,7 @@ import com.google.common.collect.Sets;
 import org.junit.Test;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.*;
 
 /**
  * 演示不可变集合、不可变对象
@@ -59,17 +58,20 @@ public class ImmutableCollectionTest {
      */
     @Test
     public void test3() {
-        ImmutableSet<Object> immutableSet = ImmutableSet.builder()
+        Set<Object> immutableSet = ImmutableSet.builder()
                 .add("大汉").addAll(Arrays.asList("唐", "宋", "元", "明清")).build();
         //[大汉, 唐, 宋, 元, 明清]
         System.out.println(immutableSet);
+
+        String[] strings = immutableSet.toArray(new String[immutableSet.size()]);
+        System.out.println(Arrays.asList(strings));
     }
 
     /**
      * 演示不可变列表
      */
     @Test
-    public void test4() {
+    public void testImmutableList1() {
         ImmutableList<Object> immutableList = ImmutableList.builder().add("张无忌", "李世民", "尉迟恭")
                 .addAll(Arrays.asList("杨戬", "娜扎")).build();
 
@@ -79,11 +81,22 @@ public class ImmutableCollectionTest {
         System.out.println(immutableList.get(2));
     }
 
+    @Test
+    public void testImmutableList2() {
+        List<Object> immutableList = ImmutableList.builder().add("张无忌", "李世民", "尉迟恭").addAll(Arrays.asList("杨戬", "娜扎")).build();
+
+        Object[] objects = immutableList.toArray();
+        System.out.println(Arrays.asList(objects));
+
+        objects[0] = "展昭";
+        System.out.println(Arrays.asList(objects));
+    }
+
     /**
      * 演示 不可变 Map
      */
     @Test
-    public void test5() {
+    public void testImmutableMap1() {
         ImmutableMap<String, ? extends Serializable> immutableMap = ImmutableMap.of("id", 1000, "name", "张三", "age", 24);
 
         //{id=1000, name=张三, age=24}
@@ -96,4 +109,20 @@ public class ImmutableCollectionTest {
         System.out.println(objectImmutableMap);
     }
 
+    /**
+     * ImmutableMap<K, V> copyOf(Map<? extends K, ? extends V> map)：
+     * 返回一个不可变映射，其中包含与 map 相同的条目，返回的映射以与原始映射的顺序相同
+     */
+    @Test
+    public void testImmutableMap2() {
+        Map<String, Object> tempMap = new HashMap<>();
+        tempMap.put("code", 200);
+        tempMap.put("msg", "success");
+
+        Map<String, Object> immutableMap = ImmutableMap.copyOf(tempMap);
+        tempMap.put("data", null);
+
+        System.out.println(tempMap);
+        System.out.println(immutableMap);
+    }
 }
