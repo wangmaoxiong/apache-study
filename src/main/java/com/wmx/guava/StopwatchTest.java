@@ -8,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * google 的秒表 Stopwatch 相比 Spring framewrk core 包 和 apache commons lang3 包的秒表是最方便使用的
+ * 此类不是线程安全的。
  *
  * @author wangMaoXiong
  * @version 1.0
