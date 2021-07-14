@@ -1,5 +1,6 @@
 package com.wmx.apachestudy.collections4;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.collections4.ListUtils;
 import org.junit.Test;
 
@@ -53,32 +54,33 @@ public class ListUtilsStu {
         System.out.println(equalList);//false
     }
 
-    //static <E> List<E> removeAll(final Collection<E> collection, final Collection<?> remove)
-    //获取集合 collection 减去集合 remove 后的元素。collection、remove 集合不变。
+    /**
+     * List<E> removeAll(final Collection<E> coll1, final Collection<?> coll2)
+     * 1、获取集合 coll1 减去集合 coll2 后的元素，原 coll1、coll2 集合内容不变。
+     * 2、无论两个集合中的有多少重复元素，都会视作一个进行移除，比如 coll1 中有 a,a,a，coll2 中有 a，则结果中没有 a
+     */
     @Test
-    public void test3() {
-        List<String> names1 = new ArrayList<>();
-        List<String> names2 = new ArrayList<>();
-        names1.add("张三");
-        names1.add("李四");
-        names2.add("王五");
-        names2.add("张三");
+    public void testRemoveAll1() {
+        List<String> names1 = Lists.newArrayList("马六", null, "张三", "张三", "李四", "李四", null);
+        List<String> names2 = Lists.newArrayList("王五", "张三", "李四", "李四", "李四", "李四", null);
         List<String> removeAll = ListUtils.removeAll(names1, names2);
-        System.out.println(names1 + "," + names2 + "," + removeAll);//[张三, 李四],[王五, 张三],[李四]
+        //[马六, null, 张三, 张三, 李四, 李四, null],[王五, 张三, 李四, 李四, 李四, 李四, null],[马六]
+        System.out.println(names1 + "," + names2 + "," + removeAll);
     }
 
-    //static <E> List<E> subtract(final List<E> list1, final List<? extends E> list2)
-    //从 list1 列表中减去 list2 列表中的所有元素，将结果放入新列表
+    /**
+     * static <E> List<E> subtract(final List<E> list1, final List<? extends E> list2)
+     * 1、从 list1 列表中减去 list2 列表中的所有元素，将结果放入新列表，原集合不变
+     * 2、集合中的重复元素会按个数进行相减，比如 coll1 中有 a,a,a，coll2 中有 a，则结果中有 a,a
+     */
     @Test
-    public void test4() {
-        List<String> names1 = new ArrayList<>();
-        List<String> names2 = new ArrayList<>();
-        names1.add("张三");
-        names1.add("李四");
-        names2.add("王五");
-        names2.add("张三");
+    public void testSubtract() {
+        List<String> names1 = Lists.newArrayList("马六", null, "张三", "张三", "李四", "李四", null);
+        List<String> names2 = Lists.newArrayList("王五", "张三", "李四", "李四", "李四", "李四", null);
+
         List<String> subtract = ListUtils.subtract(names1, names2);
-        System.out.println(names1 + "," + names2 + "," + subtract);//[张三, 李四],[王五, 张三],[李四]
+        //[马六, null, 张三, 张三, 李四, 李四, null],[王五, 张三, 李四, 李四, 李四, 李四, null],[马六, 张三, null]
+        System.out.println(names1 + "," + names2 + "," + subtract);
     }
 
     //static <E> List<E> sum(final List<? extends E> list1, final List<? extends E> list2)
